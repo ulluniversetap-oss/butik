@@ -827,7 +827,7 @@ div.bx-popup-form div.bx-yandex-map div.YMaps-b-balloon-point div.YMaps-b-balloo
   display: flex;
   flex-direction: column;
   flex: 0 0 36%;
-  background: var(--white-color);
+  background: var(--color-gray-600);
   border-radius: var(--rounded-30);
   padding: 4rem;
 }

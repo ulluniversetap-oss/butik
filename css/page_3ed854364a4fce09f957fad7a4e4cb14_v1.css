@@ -759,6 +759,202 @@ div.bx-popup-form div.bx-yandex-map div.YMaps-b-balloon-point div.YMaps-b-balloo
 }
 
 /* End */
+
+
+/* Start:/local/templates/abutik/components/bitrix/news.list/services-slider/style.css */
+
+.services__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+}
+
+.services__arrows {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-shrink: 0;
+}
+
+.services__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: var(--rounded-full);
+  background: var(--white-color);
+  cursor: pointer;
+  transition: var(--main-transition);
+}
+
+.services__arrow:hover {
+  background: var(--button-hover-color);
+}
+
+.services__arrow._next {
+  transform: rotate(180deg);
+}
+
+.services__arrow-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  stroke: var(--second-main-color);
+  transition: var(--main-transition);
+}
+
+.services__arrow:hover .services__arrow-icon {
+  stroke: var(--white-color);
+}
+
+.services__arrow.swiper-button-disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.services__slider {
+  overflow: hidden;
+}
+
+.services__card {
+  display: flex;
+  align-items: stretch;
+  gap: 3.2rem;
+}
+
+.services__info {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 36%;
+  background: var(--white-color);
+  border-radius: var(--rounded-30);
+  padding: 4rem;
+}
+
+.services__title {
+  margin-bottom: 2rem;
+}
+
+.services__text {
+  color: var(--input-color);
+  margin-bottom: 3.2rem;
+}
+
+.services__button {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.services__photo {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 42rem;
+  border-radius: var(--rounded-30);
+  overflow: hidden;
+}
+
+.services__gallery,
+.services__gallery .swiper-wrapper,
+.services__gallery-slide {
+  height: 100%;
+}
+
+.services__gallery-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.services__gallery-arrows {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.services__gallery-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: var(--rounded-full);
+  background: var(--white-color);
+  cursor: pointer;
+  pointer-events: all;
+  transition: var(--main-transition);
+}
+
+.services__gallery-arrow:hover {
+  background: var(--button-hover-color);
+}
+
+.services__gallery-arrow._next {
+  transform: rotate(180deg);
+}
+
+.services__gallery-icon {
+  width: 2rem;
+  height: 2rem;
+  stroke: var(--second-main-color);
+  transition: var(--main-transition);
+}
+
+.services__gallery-arrow:hover .services__gallery-icon {
+  stroke: var(--white-color);
+}
+
+.services__gallery-arrow.swiper-button-disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .services__head {
+    margin-bottom: 3rem;
+  }
+
+  .services__card {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .services__info {
+    flex: unset;
+    width: 100%;
+    padding: 3rem;
+  }
+
+  .services__photo {
+    min-height: 32rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .services__arrow {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .services__photo {
+    min-height: 24rem;
+  }
+
+  .services__info {
+    padding: 2.4rem;
+  }
+}
+
+/* End */
 /* /local/templates/abutik/components/bitrix/news.list/news-slider/style.css?17581086702977 */
 /* /local/templates/abutik/assets/css/plugins/swiper.min.css?175438928118234 */
 /* /bitrix/components/bitrix/map.yandex.system/templates/.default/style.css?1717502167666 */

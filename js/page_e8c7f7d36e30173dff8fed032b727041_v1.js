@@ -44,6 +44,51 @@ document.addEventListener("DOMContentLoaded", (event) => {
       },
     });
   });
+
+  // "Дополнительные услуги": переключение между карточками услуг
+  let servicesMain = document.querySelectorAll('[data-swiper-slider="services-main"]');
+  servicesMain.forEach(function (element) {
+    let section = element.closest(".services");
+    if (!section) return;
+    new SwiperMin(element, {
+      loop: false,
+      slidesPerView: 1,
+      spaceBetween: 0,
+      speed: 800,
+      navigation: {
+        prevEl: section.querySelector(".services__arrow._prev"),
+        nextEl: section.querySelector(".services__arrow._next"),
+      },
+    });
+  });
+
+  // "Дополнительные услуги": мини-галерея фото внутри каждой карточки (2-4 фото)
+  let servicesGalleries = document.querySelectorAll('[data-swiper-slider="services-gallery"]');
+  servicesGalleries.forEach(function (element) {
+    let photoBlock = element.closest(".services__photo");
+    if (!photoBlock) return;
+
+    let arrowsWrapper = photoBlock.querySelector(".services__gallery-arrows");
+    let slidesCount = element.querySelectorAll(".swiper-slide").length;
+
+    if (slidesCount <= 1) {
+      if (arrowsWrapper) {
+        arrowsWrapper.style.display = "none";
+      }
+      return;
+    }
+
+    new SwiperMin(element, {
+      loop: false,
+      slidesPerView: 1,
+      spaceBetween: 0,
+      speed: 600,
+      navigation: {
+        prevEl: photoBlock.querySelector(".services__gallery-arrow._prev"),
+        nextEl: photoBlock.querySelector(".services__gallery-arrow._next"),
+      },
+    });
+  });
 });
 
 /* End */

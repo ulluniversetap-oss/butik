@@ -784,7 +784,7 @@ div.bx-popup-form div.bx-yandex-map div.YMaps-b-balloon-point div.YMaps-b-balloo
   width: 4.8rem;
   height: 4.8rem;
   border-radius: var(--rounded-full);
-  background: var(--white-color);
+  background: var(--color-gray-600);
   cursor: pointer;
   transition: var(--main-transition);
 }

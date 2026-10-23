@@ -812,48 +812,6 @@ div.bx-popup-form div.bx-yandex-map div.YMaps-b-balloon-point div.YMaps-b-balloo
   margin-bottom: 3.2rem;
 }
 
-.services__item-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 1.6rem;
-  border: none;
-  outline: none;
-  background: var(--white-color);
-  border-radius: var(--rounded-full);
-  padding: 0.8rem 0.8rem 0.8rem 2.4rem;
-  font-family: var(--second-font);
-  font-size: 1.4rem;
-  font-weight: var(--fw-700);
-  color: var(--second-main-color);
-  cursor: pointer;
-  transition: var(--main-transition);
-}
-
-.services__item-button-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 3.6rem;
-  height: 3.6rem;
-  border-radius: var(--rounded-full);
-  background: var(--button-color);
-  transition: var(--main-transition);
-}
-
-.services__item-button-icon-svg {
-  width: 1.8rem;
-  height: 1.8rem;
-  stroke: var(--white-color);
-  transform: rotate(180deg);
-}
-
-@media (hover: hover) {
-  .services__item-button:hover .services__item-button-icon {
-    background: var(--button-hover-color);
-  }
-}
-
 @media screen and (max-width: 1024px) {
   .services__head {
     margin-bottom: 3rem;

@@ -1,7 +1,7 @@
 /*
  * Новогоднее оформление «А» Бутик.
  * Режимы: "snow" (лёгкий снегопад), "garland" (гирлянды сверху), "off".
- * Выбор запоминается в localStorage; можно задать ссылкой: ?ng=snow | ?ng=garland | ?ng=off
+ * На index.html есть переключатель, выбор запоминается в localStorage; можно задать ссылкой: ?ng=snow | ?ng=garland | ?ng=off
  * Чтобы убрать оформление совсем: удалить подключение css/ng.css и js/ng.js из index.html.
  */
 (function () {
@@ -219,8 +219,10 @@
   }
 
   function init() {
-    buildSwitch();
-    apply(load());
+    // Страницы index-snow.html / index-garland.html задают режим жёстко и без переключателя
+    var forced = MODES.indexOf(window.NG_FORCE) > -1 ? window.NG_FORCE : null;
+    if (!forced) buildSwitch();
+    apply(forced || load());
     var rt;
     window.addEventListener('resize', function () {
       clearTimeout(rt);

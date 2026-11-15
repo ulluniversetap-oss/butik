@@ -113,84 +113,59 @@
     }
   };
 
-  /* ---------- Гирлянда: тонкая нить микро-огней и подвески ---------- */
-  var STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/></svg>';
+  /* ---------- Гирлянда ---------- */
+  var COLORS = ['#ffd36b', '#35b9f5', '#fff1d6', '#ff7a7a', '#8ee6b0'];
   var garland = {
-    el: null, built: 0, onScroll: null, PERIOD: 6.4,
-
-    rnd: function (k) { var x = Math.sin(k * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); },
-
-    led: function (parent, x, y, ax, w) {
-      var d = document.createElement('i');
-      d.className = 'ng-led';
-      d.style.left = x.toFixed(1) + 'px';
-      d.style.top = y.toFixed(1) + 'px';
-      // волна света бежит слева направо и чуть сверху вниз по подвескам
-      d.style.animationDelay = (-(1 - ax / w) * this.PERIOD + y * 0.012).toFixed(2) + 's';
-      parent.appendChild(d);
-    },
+    el: null, built: 0,
 
     build: function () {
-      var w = window.innerWidth, mob = w < 768;
+      var w = window.innerWidth, h = w < 768 ? 44 : 48;
       if (this.built === w) return;
       this.built = w;
-      var el = this.el, svgNS = 'http://www.w3.org/2000/svg', rnd = this.rnd, i, j;
+      var el = this.el, svgNS = 'http://www.w3.org/2000/svg';
       el.innerHTML = '';
 
-      // Верхняя нить: пологие волны
-      var n = Math.max(3, Math.round(w / (mob ? 120 : 190))), seg = w / n, sag = mob ? 6 : 8, top = 2;
-      var wireY = function (x) {
-        var t = (x % seg) / seg;
-        return top + 4 * t * (1 - t) * sag;
-      };
+      // Провисающие дуги от верхнего края: чем шире экран — тем больше пролётов
+      var span = w < 768 ? 150 : 230;
+      var n = Math.max(2, Math.round(w / span));
+      var seg = w / n, sag = w < 768 ? 11 : 15, top = -5;
       var svg = document.createElementNS(svgNS, 'svg');
       svg.setAttribute('class', 'ng-garland__wire');
-      var d = 'M0 ' + top;
-      for (i = 0; i < n; i++) {
-        d += ' Q' + (i * seg + seg / 2).toFixed(1) + ' ' + (top + sag * 2) + ' ' + ((i + 1) * seg).toFixed(1) + ' ' + top;
+      svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      svg.setAttribute('preserveAspectRatio', 'none');
+      var d = '', bulbs = [], gap = w < 768 ? 30 : 38, idx = 0;
+      for (var i = 0; i < n; i++) {
+        var x0 = i * seg, x1 = x0 + seg, cx = x0 + seg / 2, cy = top + sag * 2;
+        d += (i ? '' : 'M' + x0 + ' ' + top + ' ') + 'Q' + cx + ' ' + cy + ' ' + x1 + ' ' + top + ' ';
+        // лампочки равномерно вдоль дуги (параметрически по Безье)
+        var cnt = Math.max(3, Math.round(seg / gap));
+        for (var j = 1; j < cnt; j++) {
+          var t = j / cnt, mt = 1 - t;
+          var bx = mt * mt * x0 + 2 * mt * t * cx + t * t * x1;
+          var by = mt * mt * top + 2 * mt * t * cy + t * t * top;
+          // наклон лампочки по касательной, чтобы висела естественно
+          var dx = 2 * mt * (cx - x0) + 2 * t * (x1 - cx);
+          var dy = 2 * mt * (cy - top) + 2 * t * (top - cy);
+          var rot = Math.atan2(dy, dx) * 180 / Math.PI;
+          bulbs.push({ x: bx, y: by, r: rot * -0.12 + (Math.random() * 6 - 3), i: idx++ });
+        }
       }
       var path = document.createElementNS(svgNS, 'path');
       path.setAttribute('d', d);
       svg.appendChild(path);
       el.appendChild(svg);
 
-      var step = mob ? 15 : 17;
-      for (var x = step / 2; x < w; x += step) this.led(el, x, wireY(x), x, w);
-
-      // Подвески разной длины; текстовые ссылки шапки обходим, за кнопками — можно
-      var busy = [], hs = document.querySelectorAll('.header__link:not(.button)');
-      for (i = 0; i < hs.length; i++) {
-        var r = hs[i].getBoundingClientRect();
-        if (r.width && r.top < 200) busy.push([r.left - 10, r.right + 10]);
-      }
-      var isBusy = function (px) {
-        for (var q = 0; q < busy.length; q++) if (px > busy[q][0] && px < busy[q][1]) return true;
-        return false;
-      };
-      var gap = mob ? 56 : 86, minL = mob ? 22 : 34, maxL = mob ? 74 : 150, k = 0;
-      for (x = gap * 0.55; x < w - 8; x += gap * (0.8 + rnd(k + 3) * 0.45), k++) {
-        if (isBusy(x)) continue;
-        var L = Math.round(minL + (maxL - minL) * (0.5 + 0.5 * Math.sin(k * 1.9 + 0.6)) * (0.55 + 0.45 * rnd(k + 11)));
-        var s = document.createElement('div');
-        s.className = 'ng-strand';
-        s.style.cssText = 'left:' + x.toFixed(1) + 'px;top:' + wireY(x).toFixed(1) + 'px;height:' + L + 'px;' +
-          '--drop:' + (0.15 + k * 0.05).toFixed(2) + 's;--sway:' + (5 + rnd(k + 5) * 3).toFixed(2) + 's;' +
-          '--sd:-' + (rnd(k + 9) * 6).toFixed(2) + 's';
-        var inner = document.createElement('div');
-        inner.className = 'ng-strand__in';
-        for (j = 11; j < L - 9; j += mob ? 13 : 15) this.led(inner, 0, j, x, w);
-        var o = document.createElement('i');
-        if (k % 3 === 1) {
-          o.className = 'ng-orn ng-orn--star';
-          o.innerHTML = STAR;
-        } else {
-          o.className = 'ng-orn ng-orn--ball';
-          o.style.setProperty('--s', (mob ? 7 : 8) + Math.round(rnd(k + 17) * (mob ? 3 : 5)) + 'px');
-        }
-        inner.appendChild(o);
-        s.appendChild(inner);
-        el.appendChild(s);
-      }
+      var frag = document.createDocumentFragment();
+      bulbs.forEach(function (b) {
+        var s = document.createElement('i');
+        s.className = 'ng-bulb';
+        s.dataset.k = b.i % 3;
+        s.style.cssText = 'left:' + b.x.toFixed(1) + 'px;top:' + (b.y + 1).toFixed(1) + 'px;' +
+          '--c:' + COLORS[b.i % COLORS.length] + ';--r:' + b.r.toFixed(1) + 'deg;' +
+          '--d:-' + ((b.i * 0.57) % 3.2).toFixed(2) + 's';
+        frag.appendChild(s);
+      });
+      el.appendChild(frag);
     },
 
     start: function () {
@@ -199,20 +174,17 @@
         this.el.className = 'ng-garland';
         this.el.setAttribute('aria-hidden', 'true');
         document.body.appendChild(this.el);
-        var el = this.el;
-        this.onScroll = function () { el.classList.toggle('is-compact', (window.pageYOffset || 0) > 140); };
       }
       this.el.style.display = '';
+      document.documentElement.classList.add('ng-garland-on');
       this.build();
-      window.addEventListener('scroll', this.onScroll, { passive: true });
-      this.onScroll();
-      var e = this.el;
-      requestAnimationFrame(function () { requestAnimationFrame(function () { e.classList.add('is-on'); }); });
+      var el = this.el;
+      requestAnimationFrame(function () { el.classList.add('is-on'); });
     },
     stop: function () {
       if (!this.el) return;
-      window.removeEventListener('scroll', this.onScroll);
       this.el.classList.remove('is-on');
+      document.documentElement.classList.remove('ng-garland-on');
       this.el.style.display = 'none';
     }
   };

@@ -1,7 +1,8 @@
 /* ===== Новогоднее оформление «А» Бутик ===== */
 
 /* Холст со снегом: под шапкой (z-index 20), поверх контента, клики не перехватывает */
-.ng-snow {
+.ng-snow,
+.ng-sparkle {
   position: fixed;
   inset: 0;
   width: 100%;
@@ -134,7 +135,7 @@
 }
 
 @media print {
-  .ng-snow, .ng-garland, .ng-switch { display: none !important; }
+  .ng-snow, .ng-sparkle, .ng-garland, .ng-switch { display: none !important; }
 }
 
 /* Бережём тех, у кого отключена анимация */

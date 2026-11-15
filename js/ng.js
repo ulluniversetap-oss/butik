@@ -1,7 +1,7 @@
 /*
  * Новогоднее оформление «А» Бутик.
- * Режимы: "snow" (лёгкий снегопад), "garland" (гирлянды сверху), "off".
- * На index.html есть переключатель, выбор запоминается в localStorage; можно задать ссылкой: ?ng=snow | ?ng=garland | ?ng=off
+ * Режимы: "snow" (лёгкий снегопад), "garland" (гирлянды сверху), "sparkle" (золотые огни), "off".
+ * На index.html есть переключатель, выбор запоминается в localStorage; можно задать ссылкой: ?ng=snow | ?ng=garland | ?ng=sparkle | ?ng=off
  * Чтобы убрать оформление совсем: удалить подключение css/ng.css и js/ng.js из index.html.
  */
 (function () {
@@ -9,7 +9,7 @@
 
   var DEFAULT_MODE = 'snow';
   var KEY = 'ab_ng_mode';
-  var MODES = ['snow', 'garland', 'off'];
+  var MODES = ['snow', 'garland', 'sparkle', 'off'];
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function load() {
@@ -189,13 +189,147 @@
     }
   };
 
+  /* ---------- Золотые огни: искры, боке и звёздные вспышки ---------- */
+  var sparkle = {
+    canvas: null, ctx: null, dust: [], bokeh: [], glints: [], raf: 0, last: 0,
+    w: 0, h: 0, dpr: 1, spr: null, nextGlint: 0,
+
+    glow: function (r, rgb, hard) {
+      var s = Math.ceil(r * 2 + 2), c = document.createElement('canvas');
+      c.width = c.height = s;
+      var x = c.getContext('2d'), m = s / 2, g = x.createRadialGradient(m, m, 0, m, m, r);
+      g.addColorStop(0, 'rgba(' + rgb + ',1)');
+      g.addColorStop(hard, 'rgba(' + rgb + ',.85)');
+      g.addColorStop(1, 'rgba(' + rgb + ',0)');
+      x.fillStyle = g; x.beginPath(); x.arc(m, m, r, 0, 6.2832); x.fill();
+      return c;
+    },
+
+    star: function (s) { // четырёхлучевая вспышка
+      var c = document.createElement('canvas'); c.width = c.height = s;
+      var x = c.getContext('2d'), m = s / 2;
+      [[1, .045], [.045, 1]].forEach(function (k) {
+        x.save(); x.translate(m, m); x.scale(k[0], k[1]);
+        var g = x.createRadialGradient(0, 0, 0, 0, 0, m);
+        g.addColorStop(0, 'rgba(255,248,225,1)');
+        g.addColorStop(.35, 'rgba(255,214,130,.55)');
+        g.addColorStop(1, 'rgba(255,200,100,0)');
+        x.fillStyle = g; x.beginPath(); x.arc(0, 0, m, 0, 6.2832); x.fill(); x.restore();
+      });
+      var g2 = x.createRadialGradient(m, m, 0, m, m, m * .28);
+      g2.addColorStop(0, 'rgba(255,255,255,1)'); g2.addColorStop(1, 'rgba(255,215,140,0)');
+      x.fillStyle = g2; x.beginPath(); x.arc(m, m, m * .28, 0, 6.2832); x.fill();
+      return c;
+    },
+
+    init: function () {
+      var c = this.canvas = document.createElement('canvas');
+      c.className = 'ng-sparkle';
+      c.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(c);
+      this.ctx = c.getContext('2d');
+      this.spr = {
+        dust: [this.glow(3, '240,184,80', .25), this.glow(4.5, '255,222,150', .3), this.glow(3.5, '255,250,235', .3)],
+        bokeh: [this.glow(26, '246,196,98', .55), this.glow(34, '255,226,170', .5), this.glow(22, '53,185,245', .5)],
+        star: this.star(56)
+      };
+      this.resize();
+    },
+
+    resize: function () {
+      var d = this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.w = window.innerWidth; this.h = window.innerHeight;
+      this.canvas.width = this.w * d; this.canvas.height = this.h * d;
+      var nd = Math.round(Math.min(Math.max(this.w / 18, 30), 90));
+      var nb = Math.round(Math.min(Math.max(this.w / 110, 6), 15));
+      while (this.dust.length < nd) this.dust.push(this.spawnDust(true));
+      this.dust.length = nd;
+      while (this.bokeh.length < nb) this.bokeh.push(this.spawnBokeh());
+      this.bokeh.length = nb;
+    },
+
+    spawnDust: function (anywhere) {
+      return {
+        x: Math.random() * this.w,
+        y: anywhere ? Math.random() * this.h : this.h + 8,
+        k: (Math.random() * 3) | 0,
+        vy: -(8 + Math.random() * 22),           // искры поднимаются вверх
+        amp: 6 + Math.random() * 16, fr: .3 + Math.random() * .5, ph: Math.random() * 6.28,
+        tw: 1.2 + Math.random() * 2.4, a: .55 + Math.random() * .45, sc: .6 + Math.random() * .7
+      };
+    },
+
+    spawnBokeh: function () {
+      return {
+        x: Math.random() * this.w, y: Math.random() * this.h,
+        k: Math.random() < .22 ? 2 : (Math.random() < .5 ? 0 : 1), // немного фирменного голубого
+        vx: (Math.random() - .5) * 6, vy: -(2 + Math.random() * 5),
+        sc: .7 + Math.random() * 1.3, a: .1 + Math.random() * .12, ph: Math.random() * 6.28, pf: .3 + Math.random() * .4
+      };
+    },
+
+    frame: function (t) {
+      var S = sparkle;
+      S.raf = requestAnimationFrame(S.frame);
+      var dt = Math.min((t - S.last) / 1000 || 0, .05), ts = t / 1000;
+      S.last = t;
+      var ctx = S.ctx, i, p, sp, sz, a;
+      ctx.setTransform(S.dpr, 0, 0, S.dpr, 0, 0);
+      ctx.clearRect(0, 0, S.w, S.h);
+
+      for (i = 0; i < S.bokeh.length; i++) { // дальний слой: размытые огни
+        p = S.bokeh[i];
+        p.x += p.vx * dt; p.y += p.vy * dt; p.ph += p.pf * dt;
+        if (p.y < -60) { p.y = S.h + 60; p.x = Math.random() * S.w; }
+        if (p.x < -60) p.x = S.w + 60; else if (p.x > S.w + 60) p.x = -60;
+        sp = S.spr.bokeh[p.k]; sz = sp.width * p.sc;
+        ctx.globalAlpha = p.a * (.65 + .35 * Math.sin(p.ph));
+        ctx.drawImage(sp, p.x - sz / 2, p.y - sz / 2, sz, sz);
+      }
+
+      for (i = 0; i < S.dust.length; i++) { // ближний слой: мерцающие искры
+        p = S.dust[i];
+        p.y += p.vy * dt; p.ph += p.fr * dt;
+        if (p.y < -10) { S.dust[i] = S.spawnDust(false); continue; }
+        sp = S.spr.dust[p.k]; sz = sp.width * p.sc;
+        a = p.a * (.35 + .65 * Math.abs(Math.sin(ts * p.tw + p.ph)));
+        ctx.globalAlpha = a;
+        ctx.drawImage(sp, p.x + Math.sin(p.ph) * p.amp - sz / 2, p.y - sz / 2, sz, sz);
+      }
+
+      if (dt && ts > S.nextGlint && S.glints.length < 4) { // редкие вспышки-звёздочки
+        S.glints.push({ x: Math.random() * S.w, y: Math.random() * S.h, life: 0, dur: .9 + Math.random() * .7, sc: .45 + Math.random() * .6, rot: Math.random() * .6 - .3 });
+        S.nextGlint = ts + .35 + Math.random() * 1.1;
+      }
+      for (i = S.glints.length - 1; i >= 0; i--) {
+        p = S.glints[i]; p.life += dt / p.dur;
+        if (p.life >= 1) { S.glints.splice(i, 1); continue; }
+        var e = Math.sin(Math.PI * p.life); sz = S.spr.star.width * p.sc * (.4 + .6 * e);
+        ctx.save(); ctx.globalAlpha = e; ctx.translate(p.x, p.y); ctx.rotate(p.rot + p.life * .5);
+        ctx.drawImage(S.spr.star, -sz / 2, -sz / 2, sz, sz); ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+    },
+
+    start: function () {
+      if (!this.canvas) this.init();
+      this.canvas.style.display = '';
+      if (reduce) { this.last = 0; this.frame(0); cancelAnimationFrame(this.raf); this.raf = 0; return; }
+      if (!this.raf) { this.last = performance.now(); this.raf = requestAnimationFrame(this.frame); }
+    },
+    stop: function () {
+      if (this.raf) { cancelAnimationFrame(this.raf); this.raf = 0; }
+      if (this.canvas) this.canvas.style.display = 'none';
+    }
+  };
+
   /* ---------- Переключатель ---------- */
   var current = null, sw = null;
   function apply(mode) {
     current = mode;
-    if (mode === 'snow') { garland.stop(); snow.start(); }
-    else if (mode === 'garland') { snow.stop(); garland.start(); }
-    else { snow.stop(); garland.stop(); }
+    var FX = { snow: snow, garland: garland, sparkle: sparkle };
+    for (var k in FX) if (k !== mode) FX[k].stop();
+    if (FX[mode]) FX[mode].start();
     if (sw) {
       var bs = sw.querySelectorAll('button');
       for (var i = 0; i < bs.length; i++) {
@@ -209,7 +343,7 @@
     sw.className = 'ng-switch';
     sw.setAttribute('role', 'group');
     sw.setAttribute('aria-label', 'Новогоднее оформление');
-    [['snow', '❄ Снег'], ['garland', '✦ Гирлянды'], ['off', 'Выкл']].forEach(function (o) {
+    [['snow', '❄ Снег'], ['garland', '✦ Гирлянды'], ['sparkle', '✧ Огни'], ['off', 'Выкл']].forEach(function (o) {
       var b = document.createElement('button');
       b.type = 'button'; b.dataset.mode = o[0]; b.textContent = o[1];
       b.addEventListener('click', function () { save(o[0]); apply(o[0]); });
@@ -228,13 +362,15 @@
       clearTimeout(rt);
       rt = setTimeout(function () {
         if (snow.canvas) snow.resize();
+        if (sparkle.canvas) sparkle.resize();
         if (current === 'garland') garland.build();
       }, 150);
     });
     document.addEventListener('visibilitychange', function () {
-      if (current !== 'snow' || reduce) return;
-      if (document.hidden) { cancelAnimationFrame(snow.raf); snow.raf = 0; }
-      else if (!snow.raf) { snow.last = performance.now(); snow.raf = requestAnimationFrame(snow.frame); }
+      var fx = current === 'snow' ? snow : current === 'sparkle' ? sparkle : null;
+      if (!fx || reduce) return;
+      if (document.hidden) { cancelAnimationFrame(fx.raf); fx.raf = 0; }
+      else if (!fx.raf) { fx.last = performance.now(); fx.raf = requestAnimationFrame(fx.frame); }
     });
   }
 

@@ -1,6 +1,6 @@
 /* ===== Новогоднее оформление «А» Бутик ===== */
 
-/* Холст со снегом: под шапкой (z-index 20), поверх контента, клики не перехватывает */
+/* Холсты снега и золотых огней: под шапкой (z-index 20), поверх контента, клики не перехватывают */
 .ng-snow,
 .ng-sparkle {
   position: fixed;
@@ -11,85 +11,125 @@
   pointer-events: none;
 }
 
-/* Гирлянда: над шапкой, но только в верхней полосе экрана */
+/* ---------- Гирлянда ---------- */
+/* Под шапкой: подвески уходят за кнопки, клики не перехватывает */
 .ng-garland {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 48px;
-  z-index: 21;
+  height: 230px;
+  z-index: 19;
   pointer-events: none;
   overflow: hidden;
   opacity: 0;
-  transform: translateY(-14px);
-  transition: opacity .6s ease, transform .6s ease;
+  transition: opacity .9s ease;
 }
-.ng-garland.is-on {
-  opacity: 1;
-  transform: none;
-}
+.ng-garland.is-on { opacity: 1; }
+
 .ng-garland__wire {
   position: absolute;
-  inset: 0;
+  left: 0;
+  top: 0;
   width: 100%;
-  height: 100%;
+  height: 30px;
   overflow: visible;
 }
 .ng-garland__wire path {
   fill: none;
-  stroke: rgba(34, 38, 44, .78);
-  stroke-width: 1.6;
-  stroke-linecap: round;
+  stroke: rgba(205, 165, 98, .8);
+  stroke-width: 1;
 }
 
-/* Пока висит гирлянда, шапка чуть ниже, чтобы лампочки не лезли на кнопки */
-.header { transition: padding .4s ease, background var(--main-transition, .3s); }
-.ng-garland-on .header { padding-top: 2.6rem; }
-
-/* Лампочка */
-.ng-bulb {
-  --c: #ffd36b;
+/* Микро-огонёк */
+.ng-led {
   position: absolute;
-  width: 9px;
-  height: 14px;
-  margin: 0 0 0 -4.5px;
-  transform-origin: 50% 0;
-  transform: rotate(var(--r, 0deg));
-}
-.ng-bulb::before { /* цоколь */
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -3px;
-  width: 5px;
+  width: 4px;
   height: 4px;
-  margin-left: -2.5px;
-  border-radius: 1px;
-  background: #22262c;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: #fff9ea;
+  box-shadow:
+    0 0 2px 1px rgba(255, 222, 160, .95),
+    0 0 9px 3px rgba(255, 190, 95, .45);
+  animation: ng-breathe 6.4s ease-in-out infinite;
 }
-.ng-bulb::after { /* колба */
+@keyframes ng-breathe {
+  0%, 100% { opacity: .38; transform: scale(.8); }
+  50%      { opacity: 1;   transform: scale(1.12); }
+}
+
+/* Подвеска: внешний блок опускает/поднимает, внутренний покачивается */
+.ng-strand {
+  position: absolute;
+  width: 0;
+  transform: translateY(calc(-100% - 30px));
+  transition: transform 1.2s cubic-bezier(.22, 1, .36, 1) var(--drop, 0s);
+}
+.ng-garland.is-on .ng-strand { transform: none; }
+.ng-garland.is-on.is-compact .ng-strand {
+  transform: translateY(calc(-100% - 30px));
+  transition: transform .7s cubic-bezier(.55, 0, .45, 1) 0s;
+}
+
+.ng-strand__in {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  transform-origin: 50% 0;
+  animation: ng-sway var(--sway, 6s) ease-in-out var(--sd, 0s) infinite alternate;
+}
+.ng-strand__in::before { /* нить */
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 45% 45% 55% 55% / 35% 35% 65% 65%;
-  background:
-    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, .95) 0 12%, transparent 34%),
-    var(--c);
-  box-shadow: 0 0 6px 1px var(--c), 0 0 16px 4px color-mix(in srgb, var(--c) 55%, transparent);
-  animation: ng-twinkle 3.2s ease-in-out infinite;
-  animation-delay: var(--d, 0s);
+  left: -.5px;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(rgba(205, 165, 98, .85), rgba(205, 165, 98, .4));
 }
-.ng-bulb[data-k="1"]::after { animation-duration: 2.4s; }
-.ng-bulb[data-k="2"]::after { animation-duration: 3.8s; }
-
-@keyframes ng-twinkle {
-  0%, 100% { opacity: 1; filter: brightness(1.05); }
-  45%      { opacity: .42; filter: brightness(.8); }
-  60%      { opacity: .95; filter: brightness(1.2); }
+@keyframes ng-sway {
+  from { transform: rotate(-1.8deg); }
+  to   { transform: rotate(1.8deg); }
 }
 
-/* Переключатель */
+/* Подвески-украшения */
+.ng-orn {
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
+.ng-orn--ball {
+  width: var(--s, 10px);
+  height: var(--s, 10px);
+  margin-left: calc(var(--s, 10px) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fff 0 9%, #f8e6ba 20%, #dcae62 58%, #9a6a2a 100%);
+  box-shadow:
+    0 0 12px rgba(255, 200, 110, .55),
+    inset -1px -2px 3px rgba(80, 50, 10, .3);
+}
+.ng-orn--star {
+  width: 16px;
+  height: 16px;
+  margin: -3px 0 0 -8px;
+  color: #ffe4a6;
+  filter: drop-shadow(0 0 3px rgba(255, 214, 140, .95)) drop-shadow(0 0 9px rgba(255, 180, 80, .55));
+  animation: ng-star 3.6s ease-in-out var(--sd, 0s) infinite;
+}
+.ng-orn--star svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+@keyframes ng-star {
+  0%, 100% { transform: scale(.82) rotate(0deg); }
+  50%      { transform: scale(1.1) rotate(10deg); }
+}
+
+/* ---------- Переключатель ---------- */
 .ng-switch {
   position: fixed;
   left: 14px;
@@ -129,9 +169,10 @@
 }
 
 @media (max-width: 767px) {
-  .ng-garland { height: 44px; }
+  .ng-garland { height: 130px; }
+  .ng-orn--star { width: 13px; height: 13px; margin-left: -6.5px; }
   .ng-switch { left: 10px; bottom: 10px; }
-  .ng-switch button { height: 30px; padding: 0 10px; }
+  .ng-switch button { height: 30px; padding: 0 9px; }
 }
 
 @media print {
@@ -140,6 +181,7 @@
 
 /* Бережём тех, у кого отключена анимация */
 @media (prefers-reduced-motion: reduce) {
-  .ng-bulb::after { animation: none; }
-  .ng-garland { transition: none; }
+  .ng-led, .ng-strand__in, .ng-orn--star { animation: none; }
+  .ng-garland, .ng-strand,
+  .ng-garland.is-on.is-compact .ng-strand { transition: none; }
 }

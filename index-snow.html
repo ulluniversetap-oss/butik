@@ -1697,7 +1697,33 @@
 <script type="text/javascript">(window.BX||top.BX).message({'JS_CORE_LOADING':'Загрузка...','JS_CORE_NO_DATA':'- Нет данных -','JS_CORE_WINDOW_CLOSE':'Закрыть','JS_CORE_WINDOW_EXPAND':'Развернуть','JS_CORE_WINDOW_NARROW':'Свернуть в окно','JS_CORE_WINDOW_SAVE':'Сохранить','JS_CORE_WINDOW_CANCEL':'Отменить','JS_CORE_WINDOW_CONTINUE':'Продолжить','JS_CORE_H':'ч','JS_CORE_M':'м','JS_CORE_S':'с','JSADM_AI_HIDE_EXTRA':'Скрыть лишние','JSADM_AI_ALL_NOTIF':'Показать все','JSADM_AUTH_REQ':'Требуется авторизация!','JS_CORE_WINDOW_AUTH':'Войти','JS_CORE_IMAGE_FULL':'Полный размер'});</script><script type="text/javascript" src="js/core.min.js"></script><script>BX.setJSList(['/bitrix/js/main/core/core_ajax.js','/bitrix/js/main/core/core_promise.js','/bitrix/js/main/polyfill/promise/js/promise.js','/bitrix/js/main/loadext/loadext.js','/bitrix/js/main/loadext/extension.js','/bitrix/js/main/polyfill/promise/js/promise.js','/bitrix/js/main/polyfill/find/js/find.js','/bitrix/js/main/polyfill/includes/js/includes.js','/bitrix/js/main/polyfill/matches/js/matches.js','/bitrix/js/ui/polyfill/closest/js/closest.js','/bitrix/js/main/polyfill/fill/main.polyfill.fill.js','/bitrix/js/main/polyfill/find/js/find.js','/bitrix/js/main/polyfill/matches/js/matches.js','/bitrix/js/main/polyfill/core/dist/polyfill.bundle.js','/bitrix/js/main/core/core.js','/bitrix/js/main/polyfill/intersectionobserver/js/intersectionobserver.js','/bitrix/js/main/lazyload/dist/lazyload.bundle.js','/bitrix/js/main/polyfill/core/dist/polyfill.bundle.js','/bitrix/js/main/parambag/dist/parambag.bundle.js']);
 </script>
 <script type="text/javascript">(window.BX||top.BX).message({'LANGUAGE_ID':'ru','FORMAT_DATE':'DD.MM.YYYY','FORMAT_DATETIME':'DD.MM.YYYY HH:MI:SS','COOKIE_PREFIX':'BITRIX_SM','SERVER_TZ_OFFSET':'10800','UTF_MODE':'Y','SITE_ID':'s1','SITE_DIR':'/','USER_ID':'','SERVER_TIME':'1792496442','USER_TZ_OFFSET':'0','USER_TZ_AUTO':'Y','bitrix_sessid':'2547709b27d2695ae9b48a8448be0100'});</script><script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=684c1936-9aeb-4a8f-bfc3-14ba7da8d02b"></script>
+<script type="text/javascript">
+/* Яндекс.Карты грузим только когда до блока с картой остаётся ~1 экран — главная страница открывается быстрее.
+   До загрузки ymaps.ready() складывает вызовы в очередь и выполняет их, как только API готово. */
+(function () {
+    var URL = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=684c1936-9aeb-4a8f-bfc3-14ba7da8d02b';
+    var queue = [], started = false;
+    window.ymaps = { ready: function (fn) { if (typeof fn === 'function') queue.push(fn); start(); } };
+    function load() {
+        if (started) return; started = true;
+        window.ymaps = undefined;
+        var s = document.createElement('script');
+        s.src = URL; s.async = true;
+        s.onload = function () { window.ymaps.ready(function () { queue.forEach(function (fn) { fn(); }); queue = []; }); };
+        document.head.appendChild(s);
+    }
+    function start() {
+        if (started || start.watching) return;
+        var el = document.getElementById('project-map');
+        if (!el || !('IntersectionObserver' in window)) return load();
+        start.watching = true;
+        var io = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) { io.disconnect(); load(); }
+        }, { rootMargin: '900px 0px' });
+        io.observe(el);
+    }
+})();
+</script>
 <script type="text/javascript">BX.setJSList(['/local/templates/abutik/components/bitrix/news.list/news-slider/script.js','/local/templates/abutik/assets/js/plugins/swiper.min.js','/local/templates/abutik/components/bitrix/news.list/project/script.js','/bitrix/components/bitrix/map.yandex.view/templates/.default/script.js','/local/templates/abutik/components/bitrix/news.list/map-project/script.js','/local/templates/abutik/components/bitrix/news.list/mortgage/script.js','/local/templates/abutik/assets/js/plugins/slider/nouislider.min.js','/local/templates/abutik/assets/js/plugins/gsap.js','/local/templates/abutik/assets/js/plugins/imask.js','/local/templates/abutik/assets/js/plugins/fancybox.min.js','/local/templates/abutik/assets/js/plugins/ScrollSmoother.js','/local/templates/abutik/assets/js/plugins/ScrollTrigger.js','/local/templates/abutik/assets/js/main.js','/local/templates/abutik/assets/js/expandable-text.js']);</script>
 <script type="text/javascript">BX.setCSSList(['/local/templates/abutik/components/bitrix/news.list/news-slider/style.css','/local/templates/abutik/assets/css/plugins/swiper.min.css','/bitrix/components/bitrix/map.yandex.system/templates/.default/style.css','/local/templates/abutik/components/bitrix/news.list/mortgage/style.css','/local/templates/abutik/assets/css/plugins/nouislider.css','/local/templates/abutik/assets/css/base/normalize.css','/local/templates/abutik/assets/css/base/fonts.css','/local/templates/abutik/assets/css/base/variables.css','/local/templates/abutik/assets/css/base/helpers.css','/local/templates/abutik/assets/css/config.css','/local/templates/abutik/assets/css/plugins/fancybox.min.css','/local/templates/abutik/assets/css/components/ui/button.css','/local/templates/abutik/assets/css/components/ui/dialog.css','/local/templates/abutik/assets/css/components/ui/form.css','/local/templates/abutik/assets/css/components/ui/list.css','/local/templates/abutik/assets/css/components/ui/tab.css','/local/templates/abutik/assets/css/components/ui/map.css','/local/templates/abutik/assets/css/components/ui/menu.css','/local/templates/abutik/assets/css/components/news/back.css','/local/templates/abutik/assets/css/components/project/project-title.css','/local/templates/abutik/assets/css/components/project/project-list.css','/local/templates/abutik/assets/css/components/project/container-project.css','/local/templates/abutik/assets/css/components/filter/filter.css','/local/templates/abutik/assets/css/components/filter/menu-drop.css','/local/templates/abutik/assets/css/components/filter/filter-radio.css','/local/templates/abutik/assets/css/pages/main/banner-img.css','/local/templates/abutik/assets/css/header.css','/local/templates/abutik/assets/css/footer.css','/local/templates/abutik/assets/css/components/news/news.css','/local/templates/abutik/assets/css/components/feedback/feedback.css','/local/templates/abutik/assets/css/components/feedback/custom-fancy.css','/local/templates/abutik/assets/css/pages/main/promo.css','/local/templates/abutik/assets/css/pages/main/developer-info.css','/local/templates/abutik/assets/css/pages/main/merit.css','/local/templates/abutik/assets/css/components/feedback/form-half.css','/local/templates/abutik/styles.css']);</script>
 <script type="text/javascript" src="js/template_2cffce86a298a277e378edde84702c3d_v1.js"></script>

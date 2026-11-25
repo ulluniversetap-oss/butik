@@ -67,7 +67,7 @@
 
     <div class="menu" data-menu="">
         <div class="menu__img">
-            <img src="images/menu-img.webp" alt="А-Бутик">
+            <img loading="lazy" decoding="async" src="images/menu-img.webp" alt="А-Бутик">
         </div>
 
         <div class="menu__container">
@@ -145,9 +145,12 @@
             <div class="content "><main id="smooth-wrapper">
     <div class="wrap" id="smooth-content">
         <div class="content ">
-            <section class="promo"> <video class="promo__video-bg" playsinline="" autoplay="" loop="" muted="">
-                    <source src="media/a-butik_03_09.mp4" type="video/mp4">
-                </video>
+            <section class="promo"> <video class="promo__video-bg" playsinline="" autoplay="" loop="" muted="" preload="auto" poster="images/hero-poster.jpg"></video>
+                <script>/* Видео первого экрана: 1080p на больших экранах, 720p на телефонах и при экономии трафика */
+                (function (v) {
+                    var c = navigator.connection || {}, slow = c.saveData || /2g/.test(c.effectiveType || '');
+                    v.src = 'media/hero-' + (window.innerWidth > 1024 && !slow ? '1080' : '720') + '.mp4';
+                })(document.currentScript.previousElementSibling);</script>
 
                 <div class="promo__content container">
                     <h1 class="promo__title title title_big">Квартиры от застройщика
@@ -166,11 +169,11 @@
     <div class="news-main">
         <div class="news-main__half">
                                                             <a href="/media-center/stock/skidka-do-25/" class="news-main__item">
-                        <img class="news-main__img" src="images/h7244az7o6o5wzc7mhwubbsupec0hsk2.webp" alt="Скидка до 25% на квартиры в ЖК">
+                        <img loading="lazy" decoding="async" class="news-main__img" src="images/h7244az7o6o5wzc7mhwubbsupec0hsk2.webp" alt="Скидка до 25% на квартиры в ЖК">
                         <div class="news-main__title">Скидка до 25% на квартиры в ЖК</div>
                     </a>
                                                                                 <a href="/media-center/stock/vygodnaya-semeynaya-ipoteka/" class="news-main__item">
-                        <img class="news-main__img" src="images/7j5kd38t55sfaw03wrqxwc3wbls4gt6y.jpg" alt="Выгодная семейная ипотека">
+                        <img loading="lazy" decoding="async" class="news-main__img" src="images/7j5kd38t55sfaw03wrqxwc3wbls4gt6y.jpg" alt="Выгодная семейная ипотека">
                         <div class="news-main__title">Выгодная семейная ипотека</div>
                     </a>
                                                                                                                                                                                                                                                                                                                                                                         </div>
@@ -178,31 +181,31 @@
             <div class="swiper-container news-slider" data-swiper-slider="news-main">
                 <div class="swiper-wrapper">
                                                                                                                                                                                                                 <a href="/media-center/stock/skidki-do-300-000/" class="swiper-slide news-slider__item">
-                                <img class="news-slider__img" src="images/p7qpmo6xe72qic0nnfycswck28e6stc2.jpg" alt="Скидки до 300 000 рублей в ЖК «Герои поколений»">
+                                <img loading="lazy" decoding="async" class="news-slider__img" src="images/p7qpmo6xe72qic0nnfycswck28e6stc2.jpg" alt="Скидки до 300 000 рублей в ЖК «Герои поколений»">
                                 <div class="news-slider__title">Скидки до 300 000 рублей в ЖК «Герои поколений»</div>
                             </a>
                                                                                                                         <a href="/media-center/stock/kvartiry-s-remontom/" class="swiper-slide news-slider__item">
-                                <img class="news-slider__img" src="images/8izpr4j0gg195t3x7vrnpwybuis6omc3.jpg" alt="Квартиры с ремонтом">
+                                <img loading="lazy" decoding="async" class="news-slider__img" src="images/8izpr4j0gg195t3x7vrnpwybuis6omc3.jpg" alt="Квартиры с ремонтом">
                                 <div class="news-slider__title">Квартиры с ремонтом</div>
                             </a>
                                                                                                                         <a href="/media-center/stock/aktual-predlozheniya-ot-a-butik-nedvizhimosti-/" class="swiper-slide news-slider__item">
-                                <img class="news-slider__img" src="images/453ibei5zzmol03zmm8l5xs2hj22hoog.jpg" alt="Актуальные скидки и предложения">
+                                <img loading="lazy" decoding="async" class="news-slider__img" src="images/453ibei5zzmol03zmm8l5xs2hj22hoog.jpg" alt="Актуальные скидки и предложения">
                                 <div class="news-slider__title">Актуальные скидки и предложения</div>
                             </a>
                                                                                                                         <a href="/media-center/stock/start-prodazh-novogo-zhk-zhit-khorosho-v-sovetskom-rayone/" class="swiper-slide news-slider__item">
-                                <img class="news-slider__img" src="images/xop558yvtlxxn0nkexh2hqqwpeajh4d2.webp" alt="Старт продаж нового ЖК «Жить хорошо» в Советском районе!">
+                                <img loading="lazy" decoding="async" class="news-slider__img" src="images/xop558yvtlxxn0nkexh2hqqwpeajh4d2.webp" alt="Старт продаж нового ЖК «Жить хорошо» в Советском районе!">
                                 <div class="news-slider__title">Старт продаж нового ЖК «Жить хорошо» в Советском районе!</div>
                             </a>
                                                                                                                         <a href="/media-center/stock/start-prodazh-iii-ocheredi-zhk-geroi-pokoleniy-/" class="swiper-slide news-slider__item">
-                                <img class="news-slider__img" src="images/6rk1x9f4o2dsb8rkcepqc98wsy3t7nwt.jpg" alt="Старт продаж III очереди ЖК «Герои поколений»!">
+                                <img loading="lazy" decoding="async" class="news-slider__img" src="images/6rk1x9f4o2dsb8rkcepqc98wsy3t7nwt.jpg" alt="Старт продаж III очереди ЖК «Герои поколений»!">
                                 <div class="news-slider__title">Старт продаж III очереди ЖК «Герои поколений»!</div>
                             </a>
                                                                                                                         <a href="/media-center/stock/start-prodazh-9-i-10-domov-v-zhk-novyy-v-traktorozavodskom-rayone/" class="swiper-slide news-slider__item">
-                                <img class="news-slider__img" src="images/6jtlazd3pfffds3r2ekelf1kopsrxljy.jpg" alt="Старт продаж 9 и 10 домов в ЖК Новый в Тракторозаводском районе!">
+                                <img loading="lazy" decoding="async" class="news-slider__img" src="images/6jtlazd3pfffds3r2ekelf1kopsrxljy.jpg" alt="Старт продаж 9 и 10 домов в ЖК Новый в Тракторозаводском районе!">
                                 <div class="news-slider__title">Старт продаж 9 и 10 домов в ЖК Новый в Тракторозаводском районе!</div>
                             </a>
                                                                                                                         <a href="/media-center/stock/start-prodazh-vtorogo-doma-zhk-severnyy-po-ulitse-kachalova/" class="swiper-slide news-slider__item">
-                                <img class="news-slider__img" src="images/or2xpz69rdjb5qwi83d2nqxb6tpq8wk9.jpg" alt="Старт продаж второго дома ЖК «Северный» по улице Качалова!">
+                                <img loading="lazy" decoding="async" class="news-slider__img" src="images/or2xpz69rdjb5qwi83d2nqxb6tpq8wk9.jpg" alt="Старт продаж второго дома ЖК «Северный» по улице Качалова!">
                                 <div class="news-slider__title">Старт продаж второго дома ЖК «Северный» по улице Качалова!</div>
                             </a>
                                                                                     </div>
@@ -229,39 +232,39 @@
     <div class="swiper-container news-slider  _mobile" data-swiper-slider="news-main-mobile">
         <div class="swiper-wrapper">
                             <div class="swiper-slide news-slider__item">
-                    <img class="news-slider__img" src="images/h7244az7o6o5wzc7mhwubbsupec0hsk2.webp" alt="Скидка до 25% на квартиры в ЖК">
+                    <img loading="lazy" decoding="async" class="news-slider__img" src="images/h7244az7o6o5wzc7mhwubbsupec0hsk2.webp" alt="Скидка до 25% на квартиры в ЖК">
                     <div class="news-slider__title">Скидка до 25% на квартиры в ЖК</div>
                 </div>
                             <div class="swiper-slide news-slider__item">
-                    <img class="news-slider__img" src="images/7j5kd38t55sfaw03wrqxwc3wbls4gt6y.jpg" alt="Выгодная семейная ипотека">
+                    <img loading="lazy" decoding="async" class="news-slider__img" src="images/7j5kd38t55sfaw03wrqxwc3wbls4gt6y.jpg" alt="Выгодная семейная ипотека">
                     <div class="news-slider__title">Выгодная семейная ипотека</div>
                 </div>
                             <div class="swiper-slide news-slider__item">
-                    <img class="news-slider__img" src="images/p7qpmo6xe72qic0nnfycswck28e6stc2.jpg" alt="Скидки до 300 000 рублей в ЖК «Герои поколений»">
+                    <img loading="lazy" decoding="async" class="news-slider__img" src="images/p7qpmo6xe72qic0nnfycswck28e6stc2.jpg" alt="Скидки до 300 000 рублей в ЖК «Герои поколений»">
                     <div class="news-slider__title">Скидки до 300 000 рублей в ЖК «Герои поколений»</div>
                 </div>
                             <div class="swiper-slide news-slider__item">
-                    <img class="news-slider__img" src="images/8izpr4j0gg195t3x7vrnpwybuis6omc3.jpg" alt="Квартиры с ремонтом">
+                    <img loading="lazy" decoding="async" class="news-slider__img" src="images/8izpr4j0gg195t3x7vrnpwybuis6omc3.jpg" alt="Квартиры с ремонтом">
                     <div class="news-slider__title">Квартиры с ремонтом</div>
                 </div>
                             <div class="swiper-slide news-slider__item">
-                    <img class="news-slider__img" src="images/453ibei5zzmol03zmm8l5xs2hj22hoog.jpg" alt="Актуальные скидки и предложения">
+                    <img loading="lazy" decoding="async" class="news-slider__img" src="images/453ibei5zzmol03zmm8l5xs2hj22hoog.jpg" alt="Актуальные скидки и предложения">
                     <div class="news-slider__title">Актуальные скидки и предложения</div>
                 </div>
                             <div class="swiper-slide news-slider__item">
-                    <img class="news-slider__img" src="images/xop558yvtlxxn0nkexh2hqqwpeajh4d2.webp" alt="Старт продаж нового ЖК «Жить хорошо» в Советском районе!">
+                    <img loading="lazy" decoding="async" class="news-slider__img" src="images/xop558yvtlxxn0nkexh2hqqwpeajh4d2.webp" alt="Старт продаж нового ЖК «Жить хорошо» в Советском районе!">
                     <div class="news-slider__title">Старт продаж нового ЖК «Жить хорошо» в Советском районе!</div>
                 </div>
                             <div class="swiper-slide news-slider__item">
-                    <img class="news-slider__img" src="images/6rk1x9f4o2dsb8rkcepqc98wsy3t7nwt.jpg" alt="Старт продаж III очереди ЖК «Герои поколений»!">
+                    <img loading="lazy" decoding="async" class="news-slider__img" src="images/6rk1x9f4o2dsb8rkcepqc98wsy3t7nwt.jpg" alt="Старт продаж III очереди ЖК «Герои поколений»!">
                     <div class="news-slider__title">Старт продаж III очереди ЖК «Герои поколений»!</div>
                 </div>
                             <div class="swiper-slide news-slider__item">
-                    <img class="news-slider__img" src="images/6jtlazd3pfffds3r2ekelf1kopsrxljy.jpg" alt="Старт продаж 9 и 10 домов в ЖК Новый в Тракторозаводском районе!">
+                    <img loading="lazy" decoding="async" class="news-slider__img" src="images/6jtlazd3pfffds3r2ekelf1kopsrxljy.jpg" alt="Старт продаж 9 и 10 домов в ЖК Новый в Тракторозаводском районе!">
                     <div class="news-slider__title">Старт продаж 9 и 10 домов в ЖК Новый в Тракторозаводском районе!</div>
                 </div>
                             <div class="swiper-slide news-slider__item">
-                    <img class="news-slider__img" src="images/or2xpz69rdjb5qwi83d2nqxb6tpq8wk9.jpg" alt="Старт продаж второго дома ЖК «Северный» по улице Качалова!">
+                    <img loading="lazy" decoding="async" class="news-slider__img" src="images/or2xpz69rdjb5qwi83d2nqxb6tpq8wk9.jpg" alt="Старт продаж второго дома ЖК «Северный» по улице Качалова!">
                     <div class="news-slider__title">Старт продаж второго дома ЖК «Северный» по улице Качалова!</div>
                 </div>
                     </div>
@@ -466,7 +469,7 @@
                                                         
                         <a href="https://geroi34.ru/" class="project-list__item _big" data-project="" data-filter-district="Dzerzhinsky_6" data-filter-stage="soon_6" target="_blank">
                             <div class="project-list__img">
-                                <img src="images/68x3tzmdbq5tzjss8uidx0fipk7gpv87.jpg?v=2" alt="ЖК «Герои поколений»">
+                                <img loading="lazy" decoding="async" src="images/68x3tzmdbq5tzjss8uidx0fipk7gpv87.jpg?v=2" alt="ЖК «Герои поколений»">
                             </div>
                             <div class="project-list__info">
                                 <div>
@@ -478,7 +481,7 @@
                         </a>
                                                                                                                             <a href="https://tzrnew.ru/" class="project-list__item" data-project="" data-filter-district="Traktorozavodsky_6" data-filter-stage="soon_6">
                             <div class="project-list__img">
-                                <img src="images/xh87vhlk73aquoo7gi0zci0df2fq9v4y.jpg?v=2" alt="ЖК Новый">
+                                <img loading="lazy" decoding="async" src="images/xh87vhlk73aquoo7gi0zci0df2fq9v4y.jpg?v=2" alt="ЖК Новый">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК Новый</div>
@@ -488,7 +491,7 @@
                         </a>
                                                                                                                             <a href="/residential-properties/zhk-zhit-khorosho/" class="project-list__item" data-project="" data-filter-district="Soviet_6" data-filter-stage="soon_6">
                             <div class="project-list__img">
-                                <img src="images/oeqgsieooe7droj9fkir7epy606dcghl.jpg?v=2" alt="ЖК Жить хорошо">
+                                <img loading="lazy" decoding="async" src="images/oeqgsieooe7droj9fkir7epy606dcghl.jpg?v=2" alt="ЖК Жить хорошо">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК Жить хорошо</div>
@@ -498,7 +501,7 @@
                         </a>
                                                                                                                             <a href="https://serdce-goroda.ru/" class="project-list__item" data-project="" data-filter-district="Centralnyj_6" data-filter-stage="soon_6">
                             <div class="project-list__img">
-                                <img src="images/rln0wcavshxrg49t4ccs2zxjfxcdzm2o.jpg?v=2" alt="ЖК Сердце Города">
+                                <img loading="lazy" decoding="async" src="images/rln0wcavshxrg49t4ccs2zxjfxcdzm2o.jpg?v=2" alt="ЖК Сердце Города">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК Сердце Города</div>
@@ -508,7 +511,7 @@
                         </a>
                                                                                                                             <a href="https://beregvolgi.ru/" class="project-list__item" data-project="" data-filter-district=" Voroshilovsky_6" data-filter-stage="soon_6">
                             <div class="project-list__img">
-                                <img src="images/qhd6t1yrrygh42wcxf8uzsgrkimyt6mr.jpg?v=2" alt="ЖК «Берег Волги»">
+                                <img loading="lazy" decoding="async" src="images/qhd6t1yrrygh42wcxf8uzsgrkimyt6mr.jpg?v=2" alt="ЖК «Берег Волги»">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК «Берег Волги»</div>
@@ -518,7 +521,7 @@
                         </a>
                                                                                                                             <a href="https://severny34.ru/" class="project-list__item" data-project="" data-filter-district="Krasnooktyabrsky_6" data-filter-stage="soon_6">
                             <div class="project-list__img">
-                                <img src="images/psugdowzuyerys1ol7adw826syozawte.jpg?v=2" alt="ЖК «Северный» IV очередь">
+                                <img loading="lazy" decoding="async" src="images/psugdowzuyerys1ol7adw826syozawte.jpg?v=2" alt="ЖК «Северный» IV очередь">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК «Северный» IV очередь</div>
@@ -528,7 +531,7 @@
                         </a>
                                                                                                                             <a href="/residential-properties/zhk-na-35-gvardeyskoy/" class="project-list__item" data-project="" data-filter-district="Soviet_6" data-filter-stage="soon_6">
                             <div class="project-list__img">
-                                <img src="images/h6oynio48moekk45po2615gflhr7vq3f.jpg?v=2" alt="ЖК на 35 Гвардейской">
+                                <img loading="lazy" decoding="async" src="images/h6oynio48moekk45po2615gflhr7vq3f.jpg?v=2" alt="ЖК на 35 Гвардейской">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК на 35 Гвардейской</div>
@@ -538,7 +541,7 @@
                         </a>
                                                                                                                             <a href="javascript:void(0);" class="project-list__item" data-project="" data-filter-district="Centralnyj_6" data-filter-stage="realize_6">
                             <div class="project-list__img">
-                                <img src="images/34y8wnkuo67yyp57jf6v2v6e9g1ce5vg.jpg" alt="Каланча">
+                                <img loading="lazy" decoding="async" src="images/34y8wnkuo67yyp57jf6v2v6e9g1ce5vg.jpg" alt="Каланча">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">Каланча</div>
@@ -547,7 +550,7 @@
                         </a>
                                                                                                                             <a href="/residential-properties/zhk-na-atlasova/" class="project-list__item" data-project="" data-filter-district="Traktorozavodsky_6" data-filter-stage="soon_6">
                             <div class="project-list__img">
-                                <img src="images/o0trecfv9pps5p84opzu893dczyqovep.jpg?v=2" alt="«ЖК на Атласова»">
+                                <img loading="lazy" decoding="async" src="images/o0trecfv9pps5p84opzu893dczyqovep.jpg?v=2" alt="«ЖК на Атласова»">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">«ЖК на Атласова»</div>
@@ -557,7 +560,7 @@
                         </a>
                                                                                                                             <a href="/residential-properties/zhk-na-matrosova/" class="project-list__item" data-project="" data-filter-district="Krasnooktyabrsky_6" data-filter-stage="soon_6">
                             <div class="project-list__img">
-                                <img src="images/c9v2ax43q3h30im5qogxr2qp8vp8td6m.jpg?v=2" alt="«ЖК на Матросова»">
+                                <img loading="lazy" decoding="async" src="images/c9v2ax43q3h30im5qogxr2qp8vp8td6m.jpg?v=2" alt="«ЖК на Матросова»">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">«ЖК на Матросова»</div>
@@ -567,7 +570,7 @@
                         </a>
                                                                                                                             <a href="/residential-properties/zhk-granat/" class="project-list__item" data-project="" data-filter-district="Krasnooktyabrsky_6" data-filter-stage="realize_6">
                             <div class="project-list__img">
-                                <img src="images/d9pn1stjox32s9e33uv49v731pnq1p20.jpg" alt="«ЖК Гранат»">
+                                <img loading="lazy" decoding="async" src="images/d9pn1stjox32s9e33uv49v731pnq1p20.jpg" alt="«ЖК Гранат»">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">«ЖК Гранат»</div>
@@ -577,7 +580,7 @@
                         </a>
                                                                                                                             <a href="/residential-properties/zhk-na-tarifnoy/" class="project-list__item" data-project="" data-filter-district="Krasnooktyabrsky_6" data-filter-stage="realize_6">
                             <div class="project-list__img">
-                                <img src="images/6emmjubdky5972szum118wlug5qbpox5.jpg" alt="ЖК Клубный дом на Тарифной">
+                                <img loading="lazy" decoding="async" src="images/6emmjubdky5972szum118wlug5qbpox5.jpg" alt="ЖК Клубный дом на Тарифной">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК Клубный дом на Тарифной</div>
@@ -587,7 +590,7 @@
                         </a>
                                                                                                                             <a href="/residential-properties/zhk-severnyy-1-3/" class="project-list__item" data-project="" data-filter-district="Krasnooktyabrsky_6" data-filter-stage="realize_6">
                             <div class="project-list__img">
-                                <img src="images/t56hebp04zlceaj4v33mt0t9tzgz7v3p.jpg" alt="ЖК «Северный» I - III">
+                                <img loading="lazy" decoding="async" src="images/t56hebp04zlceaj4v33mt0t9tzgz7v3p.jpg" alt="ЖК «Северный» I - III">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК «Северный» I - III</div>
@@ -596,7 +599,7 @@
                         </a>
                                                                                                                             <a href="/residential-properties/zhk-semeynyy/" class="project-list__item" data-project="" data-filter-district="Soviet_6" data-filter-stage="realize_6">
                             <div class="project-list__img">
-                                <img src="images/qti3ftrl5bmwaa9qz9vauvvz4us4fjop.jpg" alt="ЖК «Семейный»">
+                                <img loading="lazy" decoding="async" src="images/qti3ftrl5bmwaa9qz9vauvvz4us4fjop.jpg" alt="ЖК «Семейный»">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК «Семейный»</div>
@@ -606,7 +609,7 @@
                         </a>
                                                                                                                             <a href="/residential-properties/zhk-zenit-/" class="project-list__item" data-project="" data-filter-district="Krasnooktyabrsky_6" data-filter-stage="realize_6">
                             <div class="project-list__img">
-                                <img src="images/ryi31cgrdx77vjs6a80fxnj56mkh696d.jpg" alt="ЖК «Зенит»">
+                                <img loading="lazy" decoding="async" src="images/ryi31cgrdx77vjs6a80fxnj56mkh696d.jpg" alt="ЖК «Зенит»">
                             </div>
                             <div class="project-list__info">
                                 <div class="project-list__title">ЖК «Зенит»</div>
@@ -657,7 +660,7 @@
                             </div>
 
                             <div class="form-group">
-                                <img data-role="captcha" src="" alt="CAPTCHA">
+                                <img loading="lazy" decoding="async" data-role="captcha" src="" alt="CAPTCHA">
 
                                 <input type="hidden" name="captcha_code">
 
@@ -733,7 +736,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/taxc93ybpod268l4fy6lps15ji364ldp.webp" alt="Сбербанк базовая">
+                                <img loading="lazy" decoding="async" src="images/taxc93ybpod268l4fy6lps15ji364ldp.webp" alt="Сбербанк базовая">
                             </div>
                             <div class="mortgage__name">Сбербанк базовая</div>
                         </div>
@@ -747,7 +750,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/taxc93ybpod268l4fy6lps15ji364ldp.webp" alt="Сбербанк семейная">
+                                <img loading="lazy" decoding="async" src="images/taxc93ybpod268l4fy6lps15ji364ldp.webp" alt="Сбербанк семейная">
                             </div>
                             <div class="mortgage__name">Сбербанк семейная</div>
                         </div>
@@ -761,7 +764,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/taxc93ybpod268l4fy6lps15ji364ldp.webp" alt="Сбербанк Траншевая">
+                                <img loading="lazy" decoding="async" src="images/taxc93ybpod268l4fy6lps15ji364ldp.webp" alt="Сбербанк Траншевая">
                             </div>
                             <div class="mortgage__name">Сбербанк Траншевая</div>
                         </div>
@@ -775,7 +778,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/taxc93ybpod268l4fy6lps15ji364ldp.webp" alt="Сбербанк IT Ипотека">
+                                <img loading="lazy" decoding="async" src="images/taxc93ybpod268l4fy6lps15ji364ldp.webp" alt="Сбербанк IT Ипотека">
                             </div>
                             <div class="mortgage__name">Сбербанк IT Ипотека</div>
                         </div>
@@ -789,7 +792,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/et1zu7y46cpqe94yhruw7xagqy5i8zkd.webp" alt="Т-Банк Базовая">
+                                <img loading="lazy" decoding="async" src="images/et1zu7y46cpqe94yhruw7xagqy5i8zkd.webp" alt="Т-Банк Базовая">
                             </div>
                             <div class="mortgage__name">Т-Банк Базовая</div>
                         </div>
@@ -803,7 +806,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/v4jg139o22a9vy434hh2icwrih1d76ss.webp" alt="Альфа-Банк базовая">
+                                <img loading="lazy" decoding="async" src="images/v4jg139o22a9vy434hh2icwrih1d76ss.webp" alt="Альфа-Банк базовая">
                             </div>
                             <div class="mortgage__name">Альфа-Банк базовая</div>
                         </div>
@@ -817,7 +820,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/v4jg139o22a9vy434hh2icwrih1d76ss.webp" alt="Альфа-Банк Семейная">
+                                <img loading="lazy" decoding="async" src="images/v4jg139o22a9vy434hh2icwrih1d76ss.webp" alt="Альфа-Банк Семейная">
                             </div>
                             <div class="mortgage__name">Альфа-Банк Семейная</div>
                         </div>
@@ -831,7 +834,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/v4jg139o22a9vy434hh2icwrih1d76ss.webp" alt="Альфа-Банк IT Ипотека">
+                                <img loading="lazy" decoding="async" src="images/v4jg139o22a9vy434hh2icwrih1d76ss.webp" alt="Альфа-Банк IT Ипотека">
                             </div>
                             <div class="mortgage__name">Альфа-Банк IT Ипотека</div>
                         </div>
@@ -845,7 +848,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/niapacleruf18nyx4ucpxyf8l3icn6sr.webp" alt="ВТБ базовая">
+                                <img loading="lazy" decoding="async" src="images/niapacleruf18nyx4ucpxyf8l3icn6sr.webp" alt="ВТБ базовая">
                             </div>
                             <div class="mortgage__name">ВТБ базовая</div>
                         </div>
@@ -859,7 +862,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/niapacleruf18nyx4ucpxyf8l3icn6sr.webp" alt="ВТБ Семейная">
+                                <img loading="lazy" decoding="async" src="images/niapacleruf18nyx4ucpxyf8l3icn6sr.webp" alt="ВТБ Семейная">
                             </div>
                             <div class="mortgage__name">ВТБ Семейная</div>
                         </div>
@@ -873,7 +876,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/niapacleruf18nyx4ucpxyf8l3icn6sr.webp" alt="ВТБ IT">
+                                <img loading="lazy" decoding="async" src="images/niapacleruf18nyx4ucpxyf8l3icn6sr.webp" alt="ВТБ IT">
                             </div>
                             <div class="mortgage__name">ВТБ IT</div>
                         </div>
@@ -887,7 +890,7 @@
                                     <div class="mortgage__row" data-rate="20">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/eted7rig7jfs37mc0qutsaycn8k24myu.webp" alt="ЦентрИнвест Ипотека отличника">
+                                <img loading="lazy" decoding="async" src="images/eted7rig7jfs37mc0qutsaycn8k24myu.webp" alt="ЦентрИнвест Ипотека отличника">
                             </div>
                             <div class="mortgage__name">ЦентрИнвест Ипотека отличника</div>
                         </div>
@@ -901,7 +904,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/ofo7cxj9qr9t1ohyjvrby9gx2ortn2bd.webp" alt="АБ Россия Военная Семейная">
+                                <img loading="lazy" decoding="async" src="images/ofo7cxj9qr9t1ohyjvrby9gx2ortn2bd.webp" alt="АБ Россия Военная Семейная">
                             </div>
                             <div class="mortgage__name">АБ Россия Военная Семейная</div>
                         </div>
@@ -915,7 +918,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/ofo7cxj9qr9t1ohyjvrby9gx2ortn2bd.webp" alt="АБ Россия Семейная">
+                                <img loading="lazy" decoding="async" src="images/ofo7cxj9qr9t1ohyjvrby9gx2ortn2bd.webp" alt="АБ Россия Семейная">
                             </div>
                             <div class="mortgage__name">АБ Россия Семейная</div>
                         </div>
@@ -929,7 +932,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/ofo7cxj9qr9t1ohyjvrby9gx2ortn2bd.webp" alt="АБ Россия Базовая">
+                                <img loading="lazy" decoding="async" src="images/ofo7cxj9qr9t1ohyjvrby9gx2ortn2bd.webp" alt="АБ Россия Базовая">
                             </div>
                             <div class="mortgage__name">АБ Россия Базовая</div>
                         </div>
@@ -943,7 +946,7 @@
                                     <div class="mortgage__row" data-rate="25">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/8d8lx92hozx7g41mv4wb03do999y9md2.webp" alt="ЦентрИнвест IT Ипотека">
+                                <img loading="lazy" decoding="async" src="images/8d8lx92hozx7g41mv4wb03do999y9md2.webp" alt="ЦентрИнвест IT Ипотека">
                             </div>
                             <div class="mortgage__name">ЦентрИнвест IT Ипотека</div>
                         </div>
@@ -957,7 +960,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/8d8lx92hozx7g41mv4wb03do999y9md2.webp" alt="ЦентрИнвест Семейная">
+                                <img loading="lazy" decoding="async" src="images/8d8lx92hozx7g41mv4wb03do999y9md2.webp" alt="ЦентрИнвест Семейная">
                             </div>
                             <div class="mortgage__name">ЦентрИнвест Семейная</div>
                         </div>
@@ -971,7 +974,7 @@
                                     <div class="mortgage__row" data-rate="20">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/8d8lx92hozx7g41mv4wb03do999y9md2.webp" alt="ЦентрИнвест Базовая">
+                                <img loading="lazy" decoding="async" src="images/8d8lx92hozx7g41mv4wb03do999y9md2.webp" alt="ЦентрИнвест Базовая">
                             </div>
                             <div class="mortgage__name">ЦентрИнвест Базовая</div>
                         </div>
@@ -985,7 +988,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/hoepuop304kezwov7c3yozc9z9tm8ncj.jpg" alt="ВБРР IT ипотека">
+                                <img loading="lazy" decoding="async" src="images/hoepuop304kezwov7c3yozc9z9tm8ncj.jpg" alt="ВБРР IT ипотека">
                             </div>
                             <div class="mortgage__name">ВБРР IT ипотека</div>
                         </div>
@@ -999,7 +1002,7 @@
                                     <div class="mortgage__row" data-rate="">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/bk4l6a4xe8l0uh9cw460bhqugou0mi8y.webp" alt="ПСБ Военная базовая">
+                                <img loading="lazy" decoding="async" src="images/bk4l6a4xe8l0uh9cw460bhqugou0mi8y.webp" alt="ПСБ Военная базовая">
                             </div>
                             <div class="mortgage__name">ПСБ Военная базовая</div>
                         </div>
@@ -1013,7 +1016,7 @@
                                     <div class="mortgage__row" data-rate="">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/bk4l6a4xe8l0uh9cw460bhqugou0mi8y.webp" alt="ПСБ Военная Семейная">
+                                <img loading="lazy" decoding="async" src="images/bk4l6a4xe8l0uh9cw460bhqugou0mi8y.webp" alt="ПСБ Военная Семейная">
                             </div>
                             <div class="mortgage__name">ПСБ Военная Семейная</div>
                         </div>
@@ -1027,7 +1030,7 @@
                                     <div class="mortgage__row" data-rate="30">
                         <div class="mortgage__item">
                             <div class="mortgage__logo">
-                                <img src="images/bk4l6a4xe8l0uh9cw460bhqugou0mi8y.webp" alt="ПСБ базовая">
+                                <img loading="lazy" decoding="async" src="images/bk4l6a4xe8l0uh9cw460bhqugou0mi8y.webp" alt="ПСБ базовая">
                             </div>
                             <div class="mortgage__name">ПСБ базовая</div>
                         </div>
@@ -1079,7 +1082,7 @@
                             </div>
 
                             <div class="form-group">
-                                <img data-role="captcha" src="" alt="CAPTCHA">
+                                <img loading="lazy" decoding="async" data-role="captcha" src="" alt="CAPTCHA">
 
                                 <input type="hidden" name="captcha_code">
 
@@ -1151,7 +1154,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <img data-role="captcha" src="" alt="CAPTCHA">
+                                        <img loading="lazy" decoding="async" data-role="captcha" src="" alt="CAPTCHA">
 
                                         <input type="hidden" name="captcha_code">
 
@@ -1621,7 +1624,7 @@
                 </div>
 
                 <div class="form-group">
-                    <img data-role="captcha" src="" alt="CAPTCHA">
+                    <img loading="lazy" decoding="async" data-role="captcha" src="" alt="CAPTCHA">
                     <input type="hidden" name="captcha_code">
                     <input class="input__item" type="text" name="captcha_word" placeholder="Введите текст с картинки" required="">
                     <div class="captcha-error text_red"></div>

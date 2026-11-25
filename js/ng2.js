@@ -409,7 +409,7 @@
 
     spawn: function (anywhere) {
       var L = this.layer, z = Math.pow(Math.random(), 1.8); // большинство — дальние и мелкие
-      var size = 12 + z * (L.w < 768 ? 30 : 46);
+      var size = (L.w < 768 ? 12 : 16) + z * (L.w < 768 ? 34 : 62);
       return {
         x: Math.random() * L.w, y: anywhere ? Math.random() * L.h : -size,
         z: z, size: size, d: this.designs[(Math.random() * this.designs.length) | 0],

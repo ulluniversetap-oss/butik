@@ -251,7 +251,7 @@
   padding: 110px 16px 0;
   background:
     radial-gradient(90% 60% at 50% 0%, rgba(53, 185, 245, .22), transparent 60%),
-    linear-gradient(180deg, #0a1628 0%, #12284a 55%, #1b3a63 100%);
+    linear-gradient(180deg, #0a1628 0%, #12284a 45%, #17325a 100%);
   color: #fff;
   text-align: center;
 }
@@ -479,16 +479,16 @@
   position: relative;
   z-index: 2;
   margin: 0 -16px;
-  padding: 46px 16px 90px;
-  background: linear-gradient(180deg, #f4f8fb 0%, #fff 100%);
-  color: #474a56;
-  box-shadow: 0 -18px 30px rgba(244, 248, 251, .9);
+  padding: 56px 16px 100px;
+  background: transparent; /* тот же ночной фон, что и у блока с домом */
+  color: #fff;
 }
 .ng3-house__foot p {
   margin: 0 0 22px;
   font: 400 clamp(26px, 3.2vw, 40px)/1.1 var(--main-font, sans-serif);
   letter-spacing: .05em;
   text-transform: uppercase;
+  text-shadow: 0 0 28px rgba(255, 200, 100, .25);
 }
 
 /* история окна */

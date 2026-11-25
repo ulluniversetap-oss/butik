@@ -272,14 +272,37 @@
       return c;
     },
 
+    starSprite: function (r) { // звезда с ярким ядром и голубоватым ореолом — видна и на светлом небе
+      var R = r * 4.5, s = Math.ceil(R * 2 + 2), c = mk(s), x = c.getContext('2d'), m = s / 2;
+      var g = x.createRadialGradient(m, m, 0, m, m, R);
+      g.addColorStop(0, 'rgba(255,255,255,1)');
+      g.addColorStop(r / R, 'rgba(255,255,255,1)');
+      g.addColorStop(r * 1.9 / R, 'rgba(215,240,255,.55)');
+      g.addColorStop(1, 'rgba(150,210,255,0)');
+      x.fillStyle = g; x.beginPath(); x.arc(m, m, R, 0, TAU); x.fill();
+      return c;
+    },
+
+    flareSprite: function (s) { // четырёхлучевой отблеск для самых ярких звёзд
+      var c = mk(s), x = c.getContext('2d'), m = s / 2;
+      [[1, 0.07], [0.07, 1]].forEach(function (k) {
+        x.save(); x.translate(m, m); x.scale(k[0], k[1]);
+        var g = x.createRadialGradient(0, 0, 0, 0, 0, m);
+        g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.3, 'rgba(225,245,255,.6)'); g.addColorStop(1, 'rgba(180,225,255,0)');
+        x.fillStyle = g; x.beginPath(); x.arc(0, 0, m, 0, TAU); x.fill(); x.restore();
+      });
+      return c;
+    },
+
     build: function () {
       var L = this.layer, q = this.q;
       this.off.width = Math.ceil(L.w / q); this.off.height = Math.ceil(L.h / q);
-      var n = Math.round(Math.min(Math.max(L.w / 9, 50), 220));
+      var n = Math.round(Math.min(Math.max(L.w / 11, 40), 170));
       this.stars = [];
       for (var i = 0; i < n; i++) {
-        this.stars.push({ x: Math.random() * L.w, y: Math.pow(Math.random(), 1.6) * L.h * 0.75,
-          r: Math.random() < 0.1 ? rnd(1.1, 1.7) : rnd(0.4, 1), tw: rnd(0.6, 2.2), ph: rnd(0, TAU), a: rnd(0.35, 0.9) });
+        var p = Math.random(), k = p < 0.12 ? 2 : (p < 0.45 ? 1 : 0); // 12% крупных, треть средних
+        this.stars.push({ x: Math.random() * L.w, y: Math.pow(Math.random(), 1.5) * L.h * 0.72,
+          k: k, sc: rnd(0.8, 1.2), tw: rnd(0.6, 2), ph: rnd(0, TAU), a: [rnd(0.65, 0.9), rnd(0.8, 1), 1][k] });
       }
     },
 
@@ -316,35 +339,51 @@
       ctx.drawImage(A.off, 0, 0, W, H, 0, 0, L.w, H * A.q);
 
       // звёзды
-      ctx.fillStyle = '#fff';
       for (i = 0; i < A.stars.length; i++) {
-        var s = A.stars[i];
-        ctx.globalAlpha = s.a * (0.45 + 0.55 * Math.abs(Math.sin(ts * s.tw + s.ph)));
-        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, TAU); ctx.fill();
+        var s = A.stars[i], tw = Math.abs(Math.sin(ts * s.tw + s.ph)), sp = A.spr.star[s.k], sz = sp.width * s.sc;
+        ctx.globalAlpha = s.a * (0.6 + 0.4 * tw);
+        ctx.drawImage(sp, s.x - sz / 2, s.y - sz / 2, sz, sz);
+        if (s.k === 2) { // крупные звёзды мерцают лучиками
+          var fz = A.spr.flare.width * s.sc * (0.55 + 0.45 * tw);
+          ctx.globalAlpha = 0.85 * tw;
+          ctx.drawImage(A.spr.flare, s.x - fz / 2, s.y - fz / 2, fz, fz);
+        }
       }
       ctx.globalAlpha = 1;
 
       // падающая звезда раз в несколько секунд
       if (dt && !A.shoot && ts > A.nextShoot) {
         var sx = rnd(L.w * 0.15, L.w * 0.85);
-        A.shoot = { x: sx, y: rnd(L.h * 0.04, L.h * 0.25), vx: (sx > L.w / 2 ? -1 : 1) * rnd(520, 760), vy: rnd(160, 260), life: 0, dur: rnd(0.9, 1.3) };
-        A.nextShoot = ts + rnd(4.5, 9);
+        A.shoot = { x: sx, y: rnd(L.h * 0.04, L.h * 0.25), vx: (sx > L.w / 2 ? -1 : 1) * rnd(560, 780), vy: rnd(170, 260), life: 0, dur: rnd(1, 1.4) };
+        A.nextShoot = ts + rnd(3, 6);
       }
       if (A.shoot) {
         var sh = A.shoot; sh.life += dt / sh.dur;
         if (sh.life >= 1) A.shoot = null;
         else {
           sh.x += sh.vx * dt; sh.y += sh.vy * dt;
-          var e = Math.sin(Math.PI * sh.life), len = 0.16;
+          var e = Math.min(1, Math.sin(Math.PI * sh.life) * 1.6), len = 0.3;
           var gx = sh.x - sh.vx * len, gy = sh.y - sh.vy * len;
-          var gr = ctx.createLinearGradient(sh.x, sh.y, gx, gy);
-          gr.addColorStop(0, 'rgba(255,255,255,' + (0.95 * e).toFixed(3) + ')');
-          gr.addColorStop(0.25, 'rgba(160,225,255,' + (0.5 * e).toFixed(3) + ')');
-          gr.addColorStop(1, 'rgba(120,200,255,0)');
-          ctx.strokeStyle = gr; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+          ctx.lineCap = 'round';
+          // широкий мягкий шлейф
+          var gw = ctx.createLinearGradient(sh.x, sh.y, gx, gy);
+          gw.addColorStop(0, 'rgba(170,225,255,' + (0.45 * e).toFixed(3) + ')');
+          gw.addColorStop(1, 'rgba(120,200,255,0)');
+          ctx.strokeStyle = gw; ctx.lineWidth = 7;
           ctx.beginPath(); ctx.moveTo(sh.x, sh.y); ctx.lineTo(gx, gy); ctx.stroke();
-          ctx.globalAlpha = e; ctx.fillStyle = '#fff';
-          ctx.beginPath(); ctx.arc(sh.x, sh.y, 1.6, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
+          // яркое ядро хвоста
+          var gr = ctx.createLinearGradient(sh.x, sh.y, gx, gy);
+          gr.addColorStop(0, 'rgba(255,255,255,' + e.toFixed(3) + ')');
+          gr.addColorStop(0.35, 'rgba(200,240,255,' + (0.7 * e).toFixed(3) + ')');
+          gr.addColorStop(1, 'rgba(140,210,255,0)');
+          ctx.strokeStyle = gr; ctx.lineWidth = 2.6;
+          ctx.beginPath(); ctx.moveTo(sh.x, sh.y); ctx.lineTo(gx, gy); ctx.stroke();
+          // светящаяся «голова»
+          var hz = A.spr.star[2].width * 1.6;
+          ctx.globalAlpha = e;
+          ctx.drawImage(A.spr.star[2], sh.x - hz / 2, sh.y - hz / 2, hz, hz);
+          ctx.drawImage(A.spr.flare, sh.x - 22, sh.y - 22, 44, 44);
+          ctx.globalAlpha = 1;
         }
       }
     },
@@ -358,7 +397,8 @@
         { spr: this.raySprite('120,90,255', '40,240,210'), y: 0.40, h: 0.30, a: 0.5, k1: 0.7, k2: 1.7, k3: 1.1, k4: 9, s1: -0.8, s2: 1.1, s3: -0.6, p: 2.1 },
         { spr: this.raySprite('0,168,245', '150,235,255'), y: 0.22, h: 0.18, a: 0.4, k1: 1.3, k2: 2.6, k3: 1.7, k4: 12, s1: 1.3, s2: -0.9, s3: 1.1, p: 4.2 }
       ];
-      L.size(); this.build(); this.born = performance.now() / 1000; this.nextShoot = this.born + 2;
+      this.spr = { star: [this.starSprite(0.9), this.starSprite(1.4), this.starSprite(2.1)], flare: this.flareSprite(34) };
+      L.size(); this.build(); this.born = performance.now() / 1000; this.nextShoot = this.born + 1.5;
       var self = this;
       window.addEventListener('scroll', function () { if (reduce) self.frame(0, 2); }, { passive: true });
       L.play();

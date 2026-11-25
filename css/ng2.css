@@ -1,0 +1,28 @@
+/* ===== Новогоднее оформление «А» Бутик — вторая серия (шары / северное сияние / хрустальные снежинки) ===== */
+
+/* Холст эффекта: под шапкой (z-index 20), поверх контента, клики не перехватывает */
+.ng2-layer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+  pointer-events: none;
+}
+
+/* Сияние «подсвечивает» картинку под собой и плавно исчезает при прокрутке */
+.ng2-aurora {
+  mix-blend-mode: screen;
+}
+
+.ng2-crystal { animation: ng2-fade 1.6s ease both; }
+
+@keyframes ng2-fade { from { opacity: 0; } }
+
+@media print {
+  .ng2-layer { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ng2-crystal { animation: none; }
+}

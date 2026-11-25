@@ -273,11 +273,11 @@
     },
 
     starSprite: function (r) { // звезда с ярким ядром и голубоватым ореолом — видна и на светлом небе
-      var R = r * 4.5, s = Math.ceil(R * 2 + 2), c = mk(s), x = c.getContext('2d'), m = s / 2;
+      var R = r * 3, s = Math.ceil(R * 2 + 2), c = mk(s), x = c.getContext('2d'), m = s / 2;
       var g = x.createRadialGradient(m, m, 0, m, m, R);
       g.addColorStop(0, 'rgba(255,255,255,1)');
       g.addColorStop(r / R, 'rgba(255,255,255,1)');
-      g.addColorStop(r * 1.9 / R, 'rgba(215,240,255,.55)');
+      g.addColorStop(r * 1.6 / R, 'rgba(215,240,255,.3)');
       g.addColorStop(1, 'rgba(150,210,255,0)');
       x.fillStyle = g; x.beginPath(); x.arc(m, m, R, 0, TAU); x.fill();
       return c;
@@ -297,12 +297,12 @@
     build: function () {
       var L = this.layer, q = this.q;
       this.off.width = Math.ceil(L.w / q); this.off.height = Math.ceil(L.h / q);
-      var n = Math.round(Math.min(Math.max(L.w / 11, 40), 170));
+      var n = Math.round(Math.min(Math.max(L.w / 20, 25), 90));
       this.stars = [];
       for (var i = 0; i < n; i++) {
-        var p = Math.random(), k = p < 0.12 ? 2 : (p < 0.45 ? 1 : 0); // 12% крупных, треть средних
+        var p = Math.random(), k = p < 0.05 ? 2 : (p < 0.3 ? 1 : 0); // 5% крупных, четверть средних
         this.stars.push({ x: Math.random() * L.w, y: Math.pow(Math.random(), 1.5) * L.h * 0.72,
-          k: k, sc: rnd(0.8, 1.2), tw: rnd(0.6, 2), ph: rnd(0, TAU), a: [rnd(0.65, 0.9), rnd(0.8, 1), 1][k] });
+          k: k, sc: rnd(0.8, 1.1), tw: rnd(0.5, 1.6), ph: rnd(0, TAU), a: [rnd(0.45, 0.7), rnd(0.6, 0.85), 0.9][k] });
       }
     },
 
@@ -341,11 +341,11 @@
       // звёзды
       for (i = 0; i < A.stars.length; i++) {
         var s = A.stars[i], tw = Math.abs(Math.sin(ts * s.tw + s.ph)), sp = A.spr.star[s.k], sz = sp.width * s.sc;
-        ctx.globalAlpha = s.a * (0.6 + 0.4 * tw);
+        ctx.globalAlpha = s.a * (0.5 + 0.5 * tw);
         ctx.drawImage(sp, s.x - sz / 2, s.y - sz / 2, sz, sz);
         if (s.k === 2) { // крупные звёзды мерцают лучиками
-          var fz = A.spr.flare.width * s.sc * (0.55 + 0.45 * tw);
-          ctx.globalAlpha = 0.85 * tw;
+          var fz = A.spr.flare.width * s.sc * (0.5 + 0.5 * tw);
+          ctx.globalAlpha = 0.45 * tw * tw;
           ctx.drawImage(A.spr.flare, s.x - fz / 2, s.y - fz / 2, fz, fz);
         }
       }
@@ -355,34 +355,33 @@
       if (dt && !A.shoot && ts > A.nextShoot) {
         var sx = rnd(L.w * 0.15, L.w * 0.85);
         A.shoot = { x: sx, y: rnd(L.h * 0.04, L.h * 0.25), vx: (sx > L.w / 2 ? -1 : 1) * rnd(560, 780), vy: rnd(170, 260), life: 0, dur: rnd(1, 1.4) };
-        A.nextShoot = ts + rnd(3, 6);
+        A.nextShoot = ts + rnd(6, 11);
       }
       if (A.shoot) {
         var sh = A.shoot; sh.life += dt / sh.dur;
         if (sh.life >= 1) A.shoot = null;
         else {
           sh.x += sh.vx * dt; sh.y += sh.vy * dt;
-          var e = Math.min(1, Math.sin(Math.PI * sh.life) * 1.6), len = 0.3;
+          var e = Math.min(1, Math.sin(Math.PI * sh.life) * 1.3), len = 0.22;
           var gx = sh.x - sh.vx * len, gy = sh.y - sh.vy * len;
           ctx.lineCap = 'round';
           // широкий мягкий шлейф
           var gw = ctx.createLinearGradient(sh.x, sh.y, gx, gy);
-          gw.addColorStop(0, 'rgba(170,225,255,' + (0.45 * e).toFixed(3) + ')');
+          gw.addColorStop(0, 'rgba(170,225,255,' + (0.22 * e).toFixed(3) + ')');
           gw.addColorStop(1, 'rgba(120,200,255,0)');
-          ctx.strokeStyle = gw; ctx.lineWidth = 7;
+          ctx.strokeStyle = gw; ctx.lineWidth = 4;
           ctx.beginPath(); ctx.moveTo(sh.x, sh.y); ctx.lineTo(gx, gy); ctx.stroke();
           // яркое ядро хвоста
           var gr = ctx.createLinearGradient(sh.x, sh.y, gx, gy);
-          gr.addColorStop(0, 'rgba(255,255,255,' + e.toFixed(3) + ')');
-          gr.addColorStop(0.35, 'rgba(200,240,255,' + (0.7 * e).toFixed(3) + ')');
+          gr.addColorStop(0, 'rgba(255,255,255,' + (0.9 * e).toFixed(3) + ')');
+          gr.addColorStop(0.3, 'rgba(200,240,255,' + (0.5 * e).toFixed(3) + ')');
           gr.addColorStop(1, 'rgba(140,210,255,0)');
-          ctx.strokeStyle = gr; ctx.lineWidth = 2.6;
+          ctx.strokeStyle = gr; ctx.lineWidth = 1.8;
           ctx.beginPath(); ctx.moveTo(sh.x, sh.y); ctx.lineTo(gx, gy); ctx.stroke();
           // светящаяся «голова»
-          var hz = A.spr.star[2].width * 1.6;
+          var hz = A.spr.star[1].width;
           ctx.globalAlpha = e;
-          ctx.drawImage(A.spr.star[2], sh.x - hz / 2, sh.y - hz / 2, hz, hz);
-          ctx.drawImage(A.spr.flare, sh.x - 22, sh.y - 22, 44, 44);
+          ctx.drawImage(A.spr.star[1], sh.x - hz / 2, sh.y - hz / 2, hz, hz);
           ctx.globalAlpha = 1;
         }
       }
@@ -398,7 +397,7 @@
         { spr: this.raySprite('0,168,245', '150,235,255'), y: 0.22, h: 0.18, a: 0.4, k1: 1.3, k2: 2.6, k3: 1.7, k4: 12, s1: 1.3, s2: -0.9, s3: 1.1, p: 4.2 }
       ];
       this.spr = { star: [this.starSprite(0.9), this.starSprite(1.4), this.starSprite(2.1)], flare: this.flareSprite(34) };
-      L.size(); this.build(); this.born = performance.now() / 1000; this.nextShoot = this.born + 1.5;
+      L.size(); this.build(); this.born = performance.now() / 1000; this.nextShoot = this.born + 2.5;
       var self = this;
       window.addEventListener('scroll', function () { if (reduce) self.frame(0, 2); }, { passive: true });
       L.play();

@@ -153,6 +153,16 @@
         }, 4500);
       }
       if (location.hash === '#prediction') setTimeout(function () { self.open(); }, 400);
+
+      // Квиз Marquiz на сайте всплывает в левом нижнем углу: пока он открыт, кнопка отодвигается
+      // вправо от него, а на узком экране прячется, чтобы не перекрывать друг друга
+      setInterval(function () {
+        var q = document.querySelector('.marquiz-widget__container_left'), r = q && q.offsetWidth ? q.getBoundingClientRect() : null;
+        var hit = r && r.bottom > window.innerHeight - 90 && r.left < 200;
+        if (!hit) { btn.style.left = ''; btn.classList.remove('is-away'); return; }
+        if (window.innerWidth - r.right > 260) { btn.style.left = Math.round(r.right + 16) + 'px'; btn.classList.remove('is-away'); }
+        else btn.classList.add('is-away');
+      }, 700);
     },
 
     open: function () {
@@ -341,7 +351,7 @@
     },
 
     layout: function () {
-      var w = window.innerWidth, cols = w < 600 ? 4 : (w < 1000 ? 6 : 8), rows = w < 600 ? 6 : 5;
+      var w = window.innerWidth, cols = w < 600 ? 4 : (w < 1000 ? 6 : 8), rows = w < 600 ? 5 : 4;
       if (this.cols === cols) return;
       this.cols = cols;
       var f = this.sec.querySelector('.ng3-bld__facade'), self = this;

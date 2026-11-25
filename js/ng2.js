@@ -139,7 +139,7 @@
         [0.08, 0.55, 0.85, 'ball'], [0.3, 0.95, 1.0, 'ball'], [0.52, 0.35, 0.62, 'star'],
         [0.72, 0.75, 0.78, 'ball'], [0.92, 0.48, 0.66, 'ball']
       ];
-      var maxLen = mob ? 150 : Math.min(330, L.h * 0.36), baseR = mob ? 17 : 27, pi = 0;
+      var maxLen = mob ? 150 : Math.min(330, L.h * 0.36), baseR = mob ? 19 : 31, pi = 0;
       for (var side = 0; side < 2; side++) {
         for (var i = 0; i < perSide; i++) {
           var pl = plan[mob ? [0, 1, 3][i] : i], f = side ? 1 - pl[0] : pl[0];
@@ -468,7 +468,7 @@
     try { var q = /[?&]ng2=(\w+)/.exec(location.search); if (q) m = q[1]; } catch (e) {}
     if (MODES.indexOf(m) < 0) return;
     var fx = FX[m];
-    document.documentElement.classList.add('ng2-' + m);
+    document.documentElement.classList.add('ng2-on-' + m);
     fx.start();
     var rt;
     window.addEventListener('resize', function () {

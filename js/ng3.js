@@ -30,19 +30,13 @@
     beregVolgi: MACRO_BASE + 'complex/plan/4198566?studio=null&' + Q
   };
 
-  /* Каталог MACRO читает фильтры из ссылки только при загрузке страницы. Если мы уже на a-butik.ru,
-     смена одного «#…» страницу не перезагрузит — поэтому меняем адрес и перезагружаем сами. */
-  function goMacro(url, e) {
-    var u; try { u = new URL(url); } catch (x) { return; }
-    if (location.host === u.host && location.pathname === u.pathname) {
-      if (e) e.preventDefault();
-      location.hash = u.hash;
-      location.reload();
-    }
-  }
+  /* Ссылки на каталог открываются в новой вкладке. Каталог MACRO читает фильтры из ссылки
+     при загрузке страницы, а новая вкладка всегда грузится заново — фильтры применяются,
+     в том числе когда блок стоит на самом a-butik.ru. */
   function macroLink(a, url) {
     a.href = url;
-    a.onclick = function (e) { goMacro(url, e); };
+    a.target = '_blank';
+    a.rel = 'noopener';
   }
 
   /* Модальное окно (общая обвязка) */

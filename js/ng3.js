@@ -14,13 +14,35 @@
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
 
-  /* Открыть подбор квартир: на сайте это каталог macrocrm, иначе — прокрутка к проектам */
-  function openCatalog() {
-    try {
-      if (window.macrocrm && macrocrm.initCatalogAndShow) { macrocrm.initCatalogAndShow({ type: 'catalog' }); return; }
-    } catch (e) {}
-    var t = document.querySelector('.container-project') || document.querySelector('.project-list');
-    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  /* Ссылки на каталог MACRO на a-butik.ru. Формат:
+   *   все ЖК:        /#/macrocatalog/complexes/list?...           (фильтры: rooms=1&rooms=2, studio=null|0|1, areaFrom=60)
+   *   конкретный ЖК: /#/macrocatalog/complex/plan/<ID ЖК>?...
+   *   квартира:      /#/macrocatalog/unit/<ID квартиры>
+   * Чтобы поменять, куда ведёт окно, достаточно поменять ссылку в MACRO или в SCENES ниже. */
+  var MACRO_BASE = 'https://a-butik.ru/#/macrocatalog/';
+  var Q = 'category=flat&activity=sell';
+  var MACRO = {
+    all: MACRO_BASE + 'complexes/list?studio=null&' + Q,
+    family: MACRO_BASE + 'complexes/list?studio=null&rooms=2&rooms=3&' + Q,
+    big: MACRO_BASE + 'complexes/list?studio=null&rooms=3&rooms=4&' + Q,
+    small: MACRO_BASE + 'complexes/list?studio=null&rooms=1&' + Q,
+    from60: MACRO_BASE + 'complexes/list?studio=null&areaFrom=60&' + Q,
+    beregVolgi: MACRO_BASE + 'complex/plan/4198566?studio=null&' + Q
+  };
+
+  /* Каталог MACRO читает фильтры из ссылки только при загрузке страницы. Если мы уже на a-butik.ru,
+     смена одного «#…» страницу не перезагрузит — поэтому меняем адрес и перезагружаем сами. */
+  function goMacro(url, e) {
+    var u; try { u = new URL(url); } catch (x) { return; }
+    if (location.host === u.host && location.pathname === u.pathname) {
+      if (e) e.preventDefault();
+      location.hash = u.hash;
+      location.reload();
+    }
+  }
+  function macroLink(a, url) {
+    a.href = url;
+    a.onclick = function (e) { goMacro(url, e); };
   }
 
   /* Модальное окно (общая обвязка) */
@@ -126,7 +148,7 @@
         '<div class="ng3-predict__paper" aria-live="polite"><p class="ng3-predict__text">Загадай желание и встряхни шар — он подскажет, что приготовил для тебя новый год.</p></div>' +
         '<div class="ng3-predict__actions">' +
           '<button type="button" class="ng3-btn ng3-btn_main" data-shake data-autofocus>Встряхнуть шар</button>' +
-          '<button type="button" class="ng3-btn ng3-btn_ghost" data-catalog hidden>Подобрать квартиру</button>' +
+          '<a class="ng3-btn ng3-btn_ghost" data-catalog hidden>Подобрать квартиру</a>' +
           '<button type="button" class="ng3-btn ng3-btn_link" data-share hidden>Поделиться</button>' +
         '</div>';
       this.text = m.body.querySelector('.ng3-predict__text');
@@ -136,7 +158,7 @@
       this.catBtn = m.body.querySelector('[data-catalog]');
       this.shareBtn = m.body.querySelector('[data-share]');
       this.shakeBtn.addEventListener('click', function () { self.shake(); });
-      this.catBtn.addEventListener('click', function () { m.close(); openCatalog(); });
+      macroLink(this.catBtn, MACRO.all);
       this.shareBtn.addEventListener('click', function () { self.share(); });
       m.onclose = function () { self.snow.stop(); };
       this.snow.init(m.body.querySelector('.ng3-globe__snow'));
@@ -246,7 +268,7 @@
         '<path class="ng3-star" d="M30 6l2 4.5 5 .5-3.7 3.3 1 4.8L30 16.6 25.7 19l1-4.8L23 11l5-.5z"/></svg>',
       title: 'Первая ёлка в своей квартире',
       story: 'Год назад эта семья встречала праздник на съёмной квартире и ставила маленькую ёлку на тумбочку. В этом декабре ёлка стоит там, где они сами решили: у большого окна в гостиной.',
-      cta: 'Квартиры для семьи'
+      cta: '2- и 3-комнатные квартиры', link: MACRO.family
     },
     dance: {
       label: 'Танцуют',
@@ -254,8 +276,8 @@
         '<g class="ng3-bob b"><circle ' + S + ' cx="42" cy="32" r="5.5"/><path ' + S + ' d="M34 78l4-20-8-6 3-3 8 5h3l4-10 4 1-4 14 6 19h-6l-5-15-3 15z"/></g>' +
         '<g class="ng3-confetti"><rect x="10" y="10" width="2" height="4" fill="#ff7a7a"/><rect x="30" y="6" width="2" height="4" fill="#35b9f5"/><rect x="48" y="12" width="2" height="4" fill="#ffd36b"/></g></svg>',
       title: 'Новоселье под бой курантов',
-      story: 'Ключи они получили 28 декабря и решили не ждать: праздник прямо среди коробок. Мебели ещё нет, зато в гостиной хватает места, чтобы танцевать до утра.',
-      cta: 'Квартиры с просторной гостиной'
+      story: 'Ключи они получили 28 декабря и решили не ждать: праздник прямо среди коробок. Мебели ещё нет, зато места столько, что можно танцевать до утра.',
+      cta: '3- и 4-комнатные квартиры', link: MACRO.big
     },
     tv: {
       label: 'Смотрят кино',
@@ -263,7 +285,7 @@
         '<path ' + S + ' d="M4 80V62c0-4 3-6 6-6h40c3 0 6 2 6 6v18z"/><circle ' + S + ' cx="22" cy="52" r="6"/><circle ' + S + ' cx="38" cy="53" r="5.5"/></svg>',
       title: 'Тот самый фильм',
       story: 'Каждый год 31 декабря они пересматривают одно и то же кино. Раньше — на ноутбуке в общежитии, теперь — с дивана в своей студии, под пледом и с мандаринами.',
-      cta: 'Студии и однокомнатные'
+      cta: 'Студии и однокомнатные', link: MACRO.small
     },
     kitchen: {
       label: 'Режут салаты',
@@ -271,8 +293,8 @@
         '<g class="ng3-stir"><path ' + S + ' d="M26 42l-10 10 2 2 11-9z"/></g><path ' + S + ' d="M2 62h56v4H2z"/><path ' + S + ' d="M8 56c0 4 3 6 8 6s8-2 8-6z"/>' +
         '<path class="ng3-steam" d="M14 50c-2-3 2-5 0-8M19 50c-2-3 2-5 0-8" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2" stroke-linecap="round"/><path ' + S + ' d="M6 66h4v14H6zM50 66h4v14h-4z"/></svg>',
       title: 'Оливье на большой кухне',
-      story: 'На старой кухне двоим было тесно. Здесь у стола собирается вся семья: бабушка режет салат, папа спорит, сколько класть горошка, а дети таскают мандарины.',
-      cta: 'Квартиры с большой кухней'
+      story: 'В старой квартире за стол помещались двое. Здесь собирается вся семья: бабушка режет салат, папа спорит, сколько класть горошка, а дети таскают мандарины.',
+      cta: 'Квартиры от 60 м²', link: MACRO.from60
     },
     cat: {
       label: 'Кот на подоконнике',
@@ -281,8 +303,8 @@
         '<path class="ng3-tail ng3-sil" d="M40 64c6 0 9-3 9-8" fill="none" stroke-width="3.2" stroke-linecap="round"/>' +
         '<circle class="ng3-eye" cx="27" cy="50" r="1.1"/><circle class="ng3-eye" cx="33" cy="50" r="1.1"/></svg>',
       title: 'Свой подоконник',
-      story: 'Кот Пломбир впервые в жизни встречает Новый год на собственном широком подоконнике. Отсюда видно весь двор, гирлянды и салют — и он явно доволен переездом.',
-      cta: 'Квартиры с видом'
+      story: 'Кот Пломбир впервые в жизни встречает Новый год на собственном подоконнике. Отсюда видно Волгу, гирлянды во дворе и салют — и он явно доволен переездом.',
+      cta: 'ЖК «Берег Волги»', link: MACRO.beregVolgi
     },
     toast: {
       label: 'Поднимают бокалы',
@@ -292,7 +314,7 @@
         '<path ' + S + ' d="M0 70h60v10H0z"/></svg>',
       title: 'Соседи, которые стали друзьями',
       story: 'Познакомились в чате дома, когда выбирали ёлку для двора. Теперь встречают Новый год вместе: сначала у одних, после курантов — этажом выше.',
-      cta: 'Выбрать жилой комплекс'
+      cta: 'Все жилые комплексы', link: MACRO.all
     }
   };
   var KEYS = Object.keys(SCENES);
@@ -319,10 +341,10 @@
         '</div>' +
         '<div class="ng3-house__foot">' +
           '<p>Ваш свет скоро будет гореть здесь</p>' +
-          '<button type="button" class="ng3-btn ng3-btn_main" data-catalog>Выбрать квартиру</button>' +
+          '<a class="ng3-btn ng3-btn_main" data-catalog>Выбрать квартиру</a>' +
         '</div>';
       promo.parentNode.insertBefore(sec, promo.nextSibling);
-      sec.querySelector('[data-catalog]').addEventListener('click', openCatalog);
+      macroLink(sec.querySelector('[data-catalog]'), MACRO.all);
 
       // гирлянда по крыше
       var g = sec.querySelector('.ng3-bld__garland'), cols = ['#ffd36b', '#35b9f5', '#fff1d6', '#ff7a7a', '#8ee6b0'];
@@ -337,8 +359,7 @@
       // окно с историей
       var m = this.modal = new Modal('ng3-story', 'История окна');
       m.body.innerHTML = '<div class="ng3-story__pic"></div><div class="ng3-story__eyebrow">История одного окна</div><h3 class="ng3-story__title"></h3><p class="ng3-story__text"></p>' +
-        '<div class="ng3-predict__actions"><button type="button" class="ng3-btn ng3-btn_main" data-go data-autofocus></button><button type="button" class="ng3-btn ng3-btn_ghost" data-close>Заглянуть в другое окно</button></div>';
-      m.body.querySelector('[data-go]').addEventListener('click', function () { m.close(); openCatalog(); });
+        '<div class="ng3-predict__actions"><a class="ng3-btn ng3-btn_main" data-go data-autofocus></a><button type="button" class="ng3-btn ng3-btn_ghost" data-close>Заглянуть в другое окно</button></div>';
 
       this.flakes.init(sec.querySelector('.ng3-house__snow'), sec);
       // окна загораются по одному, когда блок попадает в экран
@@ -401,7 +422,9 @@
       b.querySelector('.ng3-story__pic').innerHTML = '<span class="ng3-win is-on is-peek is-big"><span class="ng3-win__glass">' + sc.svg + '</span></span>';
       b.querySelector('.ng3-story__title').textContent = sc.title;
       b.querySelector('.ng3-story__text').textContent = sc.story;
-      b.querySelector('[data-go]').textContent = sc.cta;
+      var go = b.querySelector('[data-go]');
+      go.textContent = sc.cta;
+      macroLink(go, sc.link || MACRO.all);
       this.modal.show();
     },
 

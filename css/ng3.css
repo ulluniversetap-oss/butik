@@ -521,3 +521,7 @@
   .ng3-bld__garland i, .ng3-globe__win rect, .ng3-win[data-scene="tv"].is-on .ng3-win__glass { animation: none !important; }
   .ng3-win.is-peek .ng3-bob, .ng3-win.is-peek .ng3-stir, .ng3-win.is-peek .ng3-glass, .ng3-win.is-peek .ng3-confetti rect { animation: none !important; }
 }
+
+/* кнопки-ссылки на каталог */
+a.ng3-btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+a.ng3-btn[hidden] { display: none; }
